@@ -11,4 +11,6 @@
 uint8_t uartProtocolHandleRemoteRequest ();
 uint8_t uartProtocolHandlePacket ();
 
+extern 
+
 #endif

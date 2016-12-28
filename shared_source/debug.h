@@ -1,13 +1,22 @@
 #ifndef __DEBUG_H__
 #define __DEBUG_H__
 
+#include "platform_specifics_macros.h"
+
+#include "protocolNumbers.h"
+
 #ifndef __cplusplus
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
 #include "../blimp__atmega_mc/defines.h"
 #include "../blimp__atmega_mc/makros.h"
 //#include "../blimp__atmega_mc/io/uart.c"
-#include "uart_protocol_handler.c"
+#include "uart_protocol_handler.h"
 #else
 #include <iostream>
+#include <cstdlib>
 #endif
 
 #define __DEBUG_TRANSACTION_OFF		0

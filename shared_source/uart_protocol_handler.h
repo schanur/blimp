@@ -1,22 +1,50 @@
 #ifndef __UART_PROTOCOL_HANDLER_H__
 #define __UART_PROTOCOL_HANDLER_H__
 
+#include <inttypes.h>
+
+#include "platform_specifics_macros.h"
+
 #ifndef __PLATFORM_SPECIFICS_ATMEGA_MC_H__
-#ifndef __PLATFORM_SPECIFICS_BLIMP_PC_H__
-#error no __PLATFORM_SPECIFICS_[$PLATFORM_NAME]_H__ included
-#endif
+	#ifndef __PLATFORM_SPECIFICS_BLIMP_PC_H__
+		#error no __PLATFORM_SPECIFICS_[$PLATFORM_NAME]_H__ included
+	#else
+		/// PC side UART function
+		struct SerialConnection;
+		/*{
+			public: int8_t getChar (char *uiReceivedChar);
+			int8_t putChar (const char iCharToSend);
+		}*/
+		int8_t SerialConnection :: getChar (char *uiReceivedChar);
+		int8_t SerialConnection :: putChar (const char iCharToSend);
+		struct SerialConnection *ser;
+		#define UART_RECEIVE_NONBLOCK ser->getChar
+		#define UART_SEND_NONBLOCK ser->putChar
+		//#define UART_RECEIVE_NONBLOCK(x) uartGetChar(x)
+		//#define UART_SEND_NONBLOCK(x) uartPutChar(x)
+	#endif
+#else
+	/// ATMEGA side UART function
+	struct uartBuffer;
+	extern struct uartBuffer strUARTLink;
+	int8_t uartGetChar(struct uartBuffer *strBufferToGet, char *uiReceivedChar);
+	int8_t uartPutChar(struct uartBuffer *strBufferToPut, char uiCharToSend);
+	#define UART_RECEIVE_NONBLOCK(x) uartGetChar(&strUARTLink,(x))
+	#define UART_SEND_NONBLOCK(x) uartPutChar(&strUARTLink,(x))
 #endif
 
 #ifndef UART_RECEIVE_NONBLOCK
-#error protocol don't know how to receive bytes. UART_RECEIVE_NONBLOCK is not defined.
+	#error protocol do not know how to receive bytes. UART_RECEIVE_NONBLOCK is not defined.
 #endif
 
 #ifndef UART_SEND_NONBLOCK
-#error protocol don't know how to send bytes. UART_SEND_NONBLOCK is not defined.
+	#error protocol do not know how to send bytes. UART_SEND_NONBLOCK is not defined.
 #endif
 
 //#include "../defines.h"
 //#include "../blimp__atmega_mc/global_vars.c"
+
+#include <inttypes.h>
 
 #include "protocolNumbers.h"
 #include "protocolPackets.h"
@@ -49,6 +77,8 @@
 /// function prototype
 //int uartProtocolHandlePacket ();
 //uint8_t uartProtocolHandlePacket ();
+
+
 
 struct strCommandBuffer {
 	char commandData[__HEADER_SIZE + __MAX_PAYLOAD_SIZE + __CHECKSUM_SIZE];

@@ -3,9 +3,11 @@
 
 #include "ring_buffer.c"
 
+typedef ringBuffer uartDirection;
+
 struct uartBuffer {
-	struct ringBuffer receive;
-	struct ringBuffer send;
+	struct uartDirection receive;
+	struct uartDirection send;
 };
 
 int8_t initUartBuffer (struct uartBuffer *strpUartBuffer, uint8_t uiReceiveBufferSize, uint8_t uiSendBufferSize);

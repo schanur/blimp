@@ -21,7 +21,7 @@
 #define __UART_SEND_BUFFER_SIZE 		32
 
 /// Error Codes
-#define __ERROR_UNKNOWN				1					
+#define __ERROR_UNKNOWN				1
 #define __ERROR_RECEIVE_BUFFER_OVERFLOW 	10
 #define __ERROR_UART_PUT_STRING 		14
 #define __ERROR_PROTOCOL_UNKNOWN_REQUEST 	30
