@@ -1,0 +1,143 @@
+#ifndef __PROTOCOL_PACKET_HANDLER_C__
+#define __PROTOCOL_PACKET_HANDLER_C__
+
+#include "protocol_packet_handler.h"
+
+uint8_t uartProtocolHandleRemoteRequest ()
+{
+	switch (protocol.receive.commandData[0]) {
+		case __UART_PROTOCOL_ECHO: {
+			uartProtocolSendResponse (NULL, 0);
+			printDebugMsg ("packet received: echo");
+			break;
+		}
+		
+		case __UART_PROTOCOL_SENSOR_COMPASS_8_BIT_RES: {
+			struct packetSensorCompass8Bit cCompass;
+			cCompass.uiDirection = readFromI2C (192, 1);
+			uartProtocolSendResponse ((char*) &cCompass, 1);
+			break;
+		}
+		
+		case __UART_PROTOCOL_SENSOR_COMPASS_16_BIT_RES: {
+			struct packetSensorCompass16Bit cCompass;
+			cCompass.uiDirection = readFromI2C (192, 2);
+			cCompass.uiDirection |= (readFromI2C (192, 3)) << 8;
+			uartProtocolSendResponse ((char*) &cCompass, 2);
+			break;
+		}
+		
+		case __UART_PROTOCOL_SENSOR_ULTRASONIC_START: {
+			//writeToI2C(224, 0, 81);
+			uartProtocolSendResponse (NULL, 0);
+			printDebugMsg ("packet received: ultrasonic start");
+			break;
+		}
+
+		case __UART_PROTOCOL_SENSOR_ULTRASONIC_READ: {
+			struct packetSensorUltrasonicRead cUltrasonic;
+			//cUltrasonic.uiDistance = 14000;
+			cUltrasonic.uiDistance = 1;
+			//char buf[16];
+			//U32IntToString (&buf, cUltrasonic.uiDistance);
+			//printDebugMsg (&buf);
+			//uartPutBinX ((char *) &cUltrasonic.uiDistance, 2);
+			toNetworkByteOrder ((char*) &cUltrasonic.uiDistance, 2);
+			//uartPutU32Int (cUltrasonic.uiDistance);
+			//cUltrasonic.uiDistance = readFromI2C (224, 3);
+			//cUltrasonic.uiDistance |= (readFromI2C (224, 2)) << 8;
+			uartProtocolSendResponse ((char*) &cUltrasonic, 2);
+			printDebugMsg ("packet received: ultrasonic read");
+			break;
+		}
+		
+		case __UART_PROTOCOL_ENGINE_BOTH: {
+			printDebugMsg ("packet received: engine both");
+			break;
+		}
+
+		case __UART_PROTOCOL_ENGINE_RIGHT: {
+			printDebugMsg ("packet received: engine right");
+			break;
+		}		
+
+		case __UART_PROTOCOL_ENGINE_LEFT: {
+			printDebugMsg ("packet received: engine left");
+			break;
+		}
+
+		case __UART_PROTOCOL_STEPPER_ENGINE: {
+			struct packetSetStepperEngine cStepperEngine;
+			int16_t *ipNewAngle, iNewAngle;
+			ipNewAngle = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE];
+			iNewAngle = *ipNewAngle;
+			toPlatformByteOrder ((char*) &iNewAngle, 2);
+			setStepperOffsetAngle (&caStepper[__STEPPER_ENGINE], iNewAngle);
+			uartProtocolSendResponse ((char*) &cStepperEngine, 2);
+			printDebugMsg ("packet received: stepper horizontal");
+			printDebugMsg ("value: ");
+			//uartPutS32Int (iNewAngle);
+			break;
+		}
+
+		case __UART_PROTOCOL_STEPPER_VERTICAL: {
+			struct packetSetStepperVertical cStepperVertical;
+			int16_t* ipNewAngle, iNewAngle;
+			ipNewAngle = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE];
+			iNewAngle = *ipNewAngle;
+			toPlatformByteOrder ((char*) &iNewAngle, 2);
+			setStepperOffsetAngle (&caStepper[__STEPPER_SENSOR_VERTICAL], iNewAngle);
+			uartProtocolSendResponse ((char*) &cStepperVertical, 2);
+			printDebugMsg ("packet received: stepper vertical");
+			printDebugMsg ("value: ");
+			//uartPutS32Int (iNewAngle);
+			break;
+		}
+
+		case __UART_PROTOCOL_STEPPER_HORIZONTAL: {
+			struct packetSetStepperHorizontal cStepperHorizontal;
+			int16_t *ipNewAngle, iNewAngle;
+			ipNewAngle = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE];
+			iNewAngle = *ipNewAngle;
+			toPlatformByteOrder ((char*) &iNewAngle, 2);
+			setStepperOffsetAngle (&caStepper[__STEPPER_SENSOR_HORIZONTAL], iNewAngle);
+			//setStepperAbsoluteAngle (&caStepper[__STEPPER_SENSOR_HORIZONTAL], iNewAngle, __STEPPER_DIRECTION_LEFT);
+			uartProtocolSendResponse ((char*) &cStepperHorizontal, 2);
+			printDebugMsg ("packet received: stepper horizontal");
+			printDebugMsg ("value: ");
+			//uartPutS32Int (iNewAngle);
+			break;
+		}
+
+		case __UART_PROTOCOL_COMMAND_LED_1: {
+			break;
+		}
+		
+		default: {
+			protocol.uiOccuredErrorCode = __ERROR_PROTOCOL_UNKNOWN_REQUEST;
+			printDebugMsg("\nunknown protocol request\n");
+			//return (__ERROR);
+			break;
+		}
+	}
+	
+	return (__SUCCESS);
+}
+
+uint8_t uartProtocolHandlePacket ()
+{
+	uint8_t uiPacketType = uartProtocolGetPacketType ();
+	if (uiPacketType == __UART_REMOTE_REQUEST) {
+		return (uartProtocolHandleRemoteRequest ());
+	} else if (uiPacketType == __UART_REMOTE_RESPONSE) {
+		uartProtocolIncSequenceNo(&protocol.uiSequenceNoReceivePos, protocol.uiSequenceNoSendPos);
+		return (__SUCCESS);
+	} else {
+		printDebugMsg("\nunknown packet source\n");
+		/// FIXME: anderer return wert
+		return (__SUCCESS);
+	}
+}
+
+
+#endif

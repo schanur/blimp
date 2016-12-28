@@ -1,0 +1,23 @@
+main*.bin
+main*.elf
+main*.hex
+main*.lst
+main*.map
+main*.o
+main*.srec
+*.swp
+*a.out
+*~
+
+############
+# Binaries #
+############
+
+MessageQueueClient
+client
+gps_lib_test
+mqsclient
+mqsclient2
+mqserver
+ser_test
+server
