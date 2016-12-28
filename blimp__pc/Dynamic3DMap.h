@@ -11,17 +11,17 @@
 #define __DYNAMIC_3D_MAP_H__
 
 
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 #include <map>
 
-#include <sys/types.h>
+#include <inttypes.h>
 
-#include "CubePosition.cpp"
-#include "CacheList.cpp"
-#include "Array3D.cpp"
+#include "CubePosition.h"
+#include "CacheList.cpp" /* Template class */
+#include "Array3D.cpp"   /* Template class */
 
-#define __DYNAMIC_3D_MAP__CACHE_USE	1
+#define __DYNAMIC_3D_MAP__CACHE_USE		1
 #define __DYNAMIC_3D_MAP__CACHE_SIZE	8
 
 

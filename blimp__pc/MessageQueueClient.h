@@ -1,6 +1,8 @@
 #ifndef __MESSAGEQUEUECLIENT_H__
 #define __MESSAGEQUEUECLIENT_H__
 
+#include <cstring>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -12,7 +14,7 @@
 
 #include "platform_specifics_blimp_pc.h"
 #include "msq_header.h"
-#include "MessageSerialisation.cpp"
+#include "MessageSerialisation.h"
 #include "SerialisedMessage.h"
 
 

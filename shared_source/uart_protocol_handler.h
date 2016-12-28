@@ -16,9 +16,16 @@
 				int8_t getChar (char *uiReceivedChar);
 				int8_t putChar (const char iCharToSend);
 		};
+		struct SerialConnection
+		{
+			public: 
+				int8_t getChar (char *uiReceivedChar);
+				int8_t putChar (const char iCharToSend);
+		};
 		/*//int8_t SerialConnection :: getChar (char *uiReceivedChar);
 		//int8_t SerialConnection :: putChar (const char iCharToSend);*/
-		struct SerialConnection *ser;
+		struct SerialConnection;
+		extern struct SerialConnection *ser;
 		#define UART_RECEIVE_NONBLOCK ser->getChar
 		#define UART_SEND_NONBLOCK ser->putChar
 		/*//#define UART_RECEIVE_NONBLOCK(x) uartGetChar(x)

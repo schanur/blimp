@@ -73,8 +73,8 @@ int MessageQueueClient :: StartMessageQueueClient (key_t msqkey) {
 
 
 int MessageQueueClient :: SendMessage (sSerialisedMsg cMsgToSend) {
-	memset((void*)c2s.message, 0, 15);
-	memcpy (c2s.message, cMsgToSend.text, 8);
+	std::memset((void*)c2s.message, 0, 15);
+	std::memcpy (c2s.message, cMsgToSend.text, 8);
 	c2s.prioritaet = client_id;
 	cerr << "Client: " << client_id << " versende: " << c2s.message << endl;
 	//printf("in decimal: %d %d %d %d %d \n",c2s.message[0],c2s.message[1],c2s.message[2],c2s.message[3],c2s.message[4]);
@@ -96,7 +96,7 @@ int MessageQueueClient :: ReceiveMessage (sSerialisedMsg &sToRec) {
 		if (s2c.prioritaet == client_id) {
 			cerr << "Packet empfangen" << endl;
 			/// Das Gesamte Paket kopieren
-			memcpy (sToRec.text, s2c.message, __HEADER_SIZE +
+			std::memcpy (sToRec.text, s2c.message, __HEADER_SIZE +
 					 __MAX_PAYLOAD_SIZE + 
 					__CHECKSUM_SIZE);
 			//printf ("(%s) nachricht erhalten Queues-ID: %ld\n", s2c.message, s2c.prioritaet);

@@ -10,12 +10,15 @@
 
 #include <gps.h>
 
-#include "defines.h"
-#include "CircleMath.cpp"
-#include "Coordinate.cpp"
-#include "Exceptions.cpp"
 
-using namespace std;
+#include "CircleMath.h"
+#include "Coordinate.h"
+#include "Exceptions.h"
+
+#ifndef __EARTH_RADIUS
+#define __EARTH_RADIUS 6371000.
+#endif
+
 
 class Distance
 {
@@ -23,11 +26,11 @@ class Distance
     private: bool bStartCoordsValid, bEndCoordsValid;
     private: bool bDirectionValid, bDistanceValid;
     private: bool bSame;
-    
+
     private: double dSphericAngle;
     private: double dDirection;
     private: double dDistance;
-    
+
     private: 
 		void calcSphericAngle ();
 		double distanceOnSphere ();

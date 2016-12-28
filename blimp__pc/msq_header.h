@@ -27,7 +27,7 @@ struct id_verwaltung {
 
 struct id_verwaltung *id_first = NULL;
 
-static void mq_verwaltung_add( int i ) {
+/*static void mq_verwaltung_add( int i ) {
    struct id_verwaltung *ptr;
    if( id_first == NULL) {
    //   id_first = malloc(sizeof( struct id_verwaltung ));
@@ -72,7 +72,7 @@ static void mq_verwaltung_remove( int i ) {
       }
       ptr=ptr_tmp;
    }
-}
+}*/
 
 typedef void (sigfunk) (int);
 

@@ -14,6 +14,7 @@ void MessageDeSerialisation :: getStruct (packetHeader *pStrToDeSerialize)
 
 }
 */
+
 void MessageDeSerialisation :: getStruct (packetSetEngineBoth *pStrToDeSerialize)
 {
 	char *strptr = (char*) pStrToDeSerialize;

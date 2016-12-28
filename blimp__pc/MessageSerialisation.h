@@ -6,7 +6,7 @@
 //#include "../shared_source/protocolPackets.h"
 //#include "../shared_source/protocolNumbers.h"
 #include "../shared_source/uart_protocol_handler.h"
-#include "SerialisedMessage.cpp"
+#include "SerialisedMessage.h"
 
 
 

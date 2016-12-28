@@ -13,10 +13,10 @@
 #include <sys/time.h>
 
 /// dieser Block wird von uart_protocol_handler benoetigt
-#define UART_RECEIVE_NONBLOCK ser->getChar (&uiCharFromBuffer)
-#define UART_SEND_NONBLOCK ser->putChar (&uiReceivedChar)
-#include "SerialConnection.cpp"
-SerialConnection *ser;
+//#define UART_RECEIVE_NONBLOCK ser->getChar (&uiCharFromBuffer)
+//#define UART_SEND_NONBLOCK ser->putChar (&uiReceivedChar)
+#include "SerialConnection.h"
+//SerialConnection *ser;
 
 
 //#include "Debug.cpp"
@@ -24,9 +24,9 @@ SerialConnection *ser;
 #include "platform_specifics_blimp_pc.h"
 #include "../shared_source/protocolNumbers.h"
 #include "../shared_source/protocolPackets.h"
-#include "../shared_source/uart_protocol_handler.c"
-#include "SerialisedMessage.cpp"
-#include "StringDump.cpp"
+#include "../shared_source/uart_protocol_handler.h"
+#include "SerialisedMessage.h"
+#include "StringDump.h"
 
 ///FIXME
 #include <execinfo.h>

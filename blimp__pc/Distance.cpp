@@ -21,12 +21,12 @@ void Distance :: calcSphericAngle ()
 				* cos (dCircEndLatitude)
 	    		* cos (dCircEndLongitude - dCircStartLongitude))))
 	    * (360. / (2. * __PI));
-    cerr << "sphericAngle: " << dSphericAngle << endl;
+    std::cerr << "sphericAngle: " << dSphericAngle << std::endl;
 }
 
 double Distance :: direction ()
 {
-	cerr << "double Distance :: direction (void): start" << endl;
+	std::cerr << "double Distance :: direction (void): start" << std::endl;
     if (bDirectionValid) { return (dDirection); }
     if (!bStartCoordsValid | !bEndCoordsValid) { throw GeneralException (); }	
     if (!bDistanceValid) {
@@ -74,7 +74,7 @@ double Distance :: distance ()
 	if (!isnan(dDistance)) {
 		return (dDistance);
 	}
-	cerr << "double Distance :: distance (void): warning: NAN, using fallback algorithm." << endl;
+	std::cerr << "double Distance :: distance (void): warning: NAN, using fallback algorithm." << std::endl;
 	if (!bDirectionValid) {
 		calcSphericAngle ();
     }
