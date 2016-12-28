@@ -69,6 +69,7 @@ int8_t uartPutString (struct uartBuffer *strBufferToPutS,
 	}
 	/// Der String ist groesser als der Buffer oder
 	/// der String ist nicht mit 0 terminiert.
+	uiGlobalError = __ERROR_CODE_UART_MESSAGE_TO_LONG;
 	return (__ERROR);
 }
 

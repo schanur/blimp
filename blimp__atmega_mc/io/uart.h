@@ -8,8 +8,13 @@
 #include "../defines.h"
 
 #include "../makros.h"
+#include "../../shared_source/error_codes.h"
 #include "uart_buffer.h"
 
+#define __BLOCKING 1
+#define __NON_BLOCKING 0
+
+extern uint8_t uiGlobalError;
 
 void initUart (struct uartBuffer *strBufferToInit);
 

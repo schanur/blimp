@@ -50,7 +50,7 @@
 #include "protocolNumbers.h"
 #include "protocolPackets.h"
 
-#include "debug.h"
+//#include "debug.h"
 
 /* 
  * Protokollbeschreibung:
@@ -86,7 +86,7 @@ struct strCommandBuffer {
 	uint8_t dataPos;
 };
 
-struct strProtocol {
+struct strUartProtocol {
 	uint8_t	uiOccuredErrorCode;
 	uint8_t uiConnectionState;
 	uint8_t uiReceiveResetCharCount;
@@ -100,26 +100,38 @@ struct strProtocol {
 	struct strCommandBuffer send;
 };
 
-struct strProtocol protocol;
 
-uint8_t uartProtocolInitProtocolHandler (const uint8_t uiSequenceNoBegin, const uint8_t uiSequenceNoEnd);
-void uartProtocolIncSequenceNo (uint8_t *uiSequenceNoToInc, uint8_t uiSequenceBarrier);
-uint8_t uartProtocolNewCommandReceived ();
+uint8_t uartProtocolInitProtocolHandler (struct strUartProtocol *strpProtocolLink, 
+		const uint8_t uiSequenceNoBegin,
+		const uint8_t uiSequenceNoEnd);
+void uartProtocolIncSequenceNo (struct strUartProtocol *strpProtocolLink,
+		uint8_t *uiSequenceNoToInc,
+		uint8_t uiSequenceBarrier);
+uint8_t uartProtocolNewCommandReceived (struct strUartProtocol *strpProtocolLink);
 uint8_t uartProtocolcalcXORChecksum (const char* const uipData, const uint8_t uiDataLength);
-uint8_t uartProtocolNewCommandValid ();
+uint8_t uartProtocolNewCommandValid (struct strUartProtocol *strpProtocolLink);
 
-uint8_t uartProtocolSendMessage (const char *uipResponse, const uint8_t uiPayloadLength, const uint8_t uiSeqenceNo, const uint8_t uiPacketTypeNo);
-uint8_t uartProtocolSendResponse (const char *uipResponse, const uint8_t uiPayloadLength);
-uint8_t uartProtocolSendRequest (const char *uipResponse, const uint8_t uiPayloadLength, const uint8_t uiPacketTypeNo);
-uint8_t uartProtocolGetPacketType ();
+uint8_t uartProtocolSendMessage (struct strUartProtocol *strpProtocolLink,
+		const char *uipResponse,
+		const uint8_t uiPayloadLength,
+		const uint8_t uiSeqenceNo,
+		const uint8_t uiPacketTypeNo);
+uint8_t uartProtocolSendResponse (struct strUartProtocol *strpProtocolLink,
+		const char *uipResponse,
+		const uint8_t uiPayloadLength);
+uint8_t uartProtocolSendRequest (struct strUartProtocol *strpProtocolLink,
+		const char *uipResponse,
+		const uint8_t uiPayloadLength,
+		const uint8_t uiPacketTypeNo);
+uint8_t uartProtocolGetPacketType (struct strUartProtocol *strpProtocolLink);
 
 
-void uartProtocolClearIncomingCommandBuffer ();
+void uartProtocolClearIncomingCommandBuffer (struct strUartProtocol *strpProtocolLink);
 
-void uartProtocolUndoResetProgress ();
-uint8_t uartProtocolConnectionReset ();
+void uartProtocolUndoResetProgress (struct strUartProtocol *strpProtocolLink);
+uint8_t uartProtocolConnectionReset (struct strUartProtocol *strpProtocolLink);
 
-uint8_t uartProtocolDoHandlerStep ();
+uint8_t uartProtocolDoHandlerStep (struct strUartProtocol *strpProtocolLink);
 
 #endif
 

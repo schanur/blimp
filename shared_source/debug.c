@@ -8,9 +8,9 @@
 void printDebugIdent ()
 {
 	#ifndef __cplusplus
-	uartProtocolSendRequest ("atme", 4, __UART_PROTOCOL_MESSAGE);
-	uartProtocolSendRequest ("ga_m", 4, __UART_PROTOCOL_MESSAGE);
-	uartProtocolSendRequest ("c: ", 3, __UART_PROTOCOL_MESSAGE);
+	uartProtocolSendRequest (&strPCLink, "atme", 4, __UART_PROTOCOL_MESSAGE);
+	uartProtocolSendRequest (&strPCLink, "ga_m", 4, __UART_PROTOCOL_MESSAGE);
+	uartProtocolSendRequest (&strPCLink, "c: ", 3, __UART_PROTOCOL_MESSAGE);
 	#else
 	std::cerr << __PLATFORM_NAME << ":  ";
 	#endif
@@ -41,10 +41,10 @@ void printDebugMsg (const char *ipDebugMsg)
 				uiPacketLength = __MAX_PAYLOAD_SIZE;
 			}
 			//uiPacketLength--;
-			uartProtocolSendRequest (ipDebugMsg + i * __MAX_PAYLOAD_SIZE, uiPacketLength, __UART_PROTOCOL_MESSAGE);
+			uartProtocolSendRequest (&strPCLink, ipDebugMsg + i * __MAX_PAYLOAD_SIZE, uiPacketLength, __UART_PROTOCOL_MESSAGE);
 		}
 		if (uiInDebugTransaction == 0) {
-			uartProtocolSendRequest ("\n", 1, __UART_PROTOCOL_MESSAGE);
+			uartProtocolSendRequest (&strPCLink, "\n", 1, __UART_PROTOCOL_MESSAGE);
 		}
 	} else {
 		printDebugMsg ("\nprintDebugMsg (): no termination\n");
@@ -78,7 +78,7 @@ void debugMsgTransactionEnd ()
 	__ENTER_CRITICAL_SECTION;
 	//uiInDebugTransaction = DEBUG_TRANSACTION_OFF;
 	if (uiInDebugTransaction == 1) {
-		uartProtocolSendRequest ("\n", 1, __UART_PROTOCOL_MESSAGE);
+		uartProtocolSendRequest (&strPCLink, "\n", 1, __UART_PROTOCOL_MESSAGE);
 	}
 	uiInDebugTransaction--;
 	__LEAVE_CRITICAL_SECTION;

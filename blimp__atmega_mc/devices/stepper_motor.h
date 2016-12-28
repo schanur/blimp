@@ -40,7 +40,7 @@ struct stepper {
 	int8_t iStepNo;	
 };
 	//int16_t iAbsoluteStepPos;	/// Anzahl der Schritte mod Schritte fuer 360Grad
-struct stepper caStepper[4];
+//struct stepper caStepper[4];
 
 /// Initialisierung eines Schrittmotors.
 void initStepper (struct stepper* cStepperToInit, const uint8_t uiStepperNo, const uint8_t uiStepType);

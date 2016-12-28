@@ -4,26 +4,30 @@
 
 #include "uart_protocol_handler.h"
 
-uint8_t uartProtocolInitProtocolHandler (const uint8_t uiSequenceNoBegin, const uint8_t uiSequenceNoEnd)
+uint8_t uartProtocolInitProtocolHandler (struct strUartProtocol *strpProtocolLink,
+		const uint8_t uiSequenceNoBegin,
+		const uint8_t uiSequenceNoEnd)
 {
-	protocol.uiSequenceNoBegin = uiSequenceNoBegin;
-	protocol.uiSequenceNoEnd = uiSequenceNoEnd;
-	protocol.uiSequenceNoReceivePos = protocol.uiSequenceNoBegin;
-	protocol.uiSequenceNoSendPos = protocol.uiSequenceNoBegin;
-	protocol.receive.dataPos = 0;
-	protocol.send.dataPos = 0;
-	protocol.uiSendResetCharCount = 0;
-	protocol.uiReceiveResetCharCount = 0;
-	protocol.uiUARTWatchdog = 0;
-	protocol.uiConnectionState = __PROTOCOL_STATE_CONNECTION_RESET;
+	strpProtocolLink->uiSequenceNoBegin = uiSequenceNoBegin;
+	strpProtocolLink->uiSequenceNoEnd = uiSequenceNoEnd;
+	strpProtocolLink->uiSequenceNoReceivePos = strpProtocolLink->uiSequenceNoBegin;
+	strpProtocolLink->uiSequenceNoSendPos = strpProtocolLink->uiSequenceNoBegin;
+	strpProtocolLink->receive.dataPos = 0;
+	strpProtocolLink->send.dataPos = 0;
+	strpProtocolLink->uiSendResetCharCount = 0;
+	strpProtocolLink->uiReceiveResetCharCount = 0;
+	strpProtocolLink->uiUARTWatchdog = 0;
+	strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_CONNECTION_RESET;
 	return (__SUCCESS);
 }
 
-void uartProtocolIncSequenceNo (uint8_t *uiSequenceNoToInc, uint8_t uiSequenceBarrier)
+void uartProtocolIncSequenceNo (struct strUartProtocol *strpProtocolLink,
+		uint8_t *uiSequenceNoToInc,
+		uint8_t uiSequenceBarrier)
 {
 	//cerr << "vor inc " << (int)protocol.uiSequenceNoSendPos << " Begin " << (int)protocol.uiSequenceNoBegin << " End " << (int)protocol.uiSequenceNoEnd << endl;
-	if (++(*uiSequenceNoToInc) > protocol.uiSequenceNoEnd) {
-		*uiSequenceNoToInc = protocol.uiSequenceNoBegin;
+	if (++(*uiSequenceNoToInc) > strpProtocolLink->uiSequenceNoEnd) {
+		*uiSequenceNoToInc = strpProtocolLink->uiSequenceNoBegin;
 	}
 	if (*uiSequenceNoToInc == uiSequenceBarrier) {
 		//panic();
@@ -31,7 +35,7 @@ void uartProtocolIncSequenceNo (uint8_t *uiSequenceNoToInc, uint8_t uiSequenceBa
 	//cerr << "nach inc " << (int)protocol.uiSequenceNoSendPos << endl;
 }
 
-uint8_t uartProtocolNewCommandReceived ()
+uint8_t uartProtocolNewCommandReceived (struct strUartProtocol *strpProtocolLink)
 {
 	/// TODO
 	/// und ebendfalls Timeout falls der PC z.B. nach
@@ -45,28 +49,28 @@ uint8_t uartProtocolNewCommandReceived ()
 		//cerr << uiCharFromBuffer;
 	//}
 	//FIXME
-	protocol.receive.commandData[protocol.receive.dataPos] = uiCharFromBuffer;
+	strpProtocolLink->receive.commandData[strpProtocolLink->receive.dataPos] = uiCharFromBuffer;
 	
 	/// Prüfung ob die Gegenstelle ein Reset-Zeichen sendet
-	if ( protocol.receive.commandData[protocol.receive.dataPos] == __UART_PROTOCOL_RESET_STATE_1_CHAR) {
-		if (++protocol.uiReceiveResetCharCount >= __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
+	if (strpProtocolLink->receive.commandData[strpProtocolLink->receive.dataPos] == __UART_PROTOCOL_RESET_STATE_1_CHAR) {
+		if (++strpProtocolLink->uiReceiveResetCharCount >= __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
 			return (4);
 		}
 	} else {
-		protocol.uiReceiveResetCharCount = 0;
+		strpProtocolLink->uiReceiveResetCharCount = 0;
 	}
 	
-	if (protocol.receive.dataPos > 2) {
+	if (strpProtocolLink->receive.dataPos > 2) {
 		/// TODO: 7 gegen define ersetzen
-		if (protocol.receive.commandData[2] > 7) {
+		if (strpProtocolLink->receive.commandData[2] > 7) {
 			return (2);
 		}
-		if (protocol.receive.dataPos == protocol.receive.commandData[2]) {
+		if (strpProtocolLink->receive.dataPos == strpProtocolLink->receive.commandData[2]) {
 			/// Paket wurde komplett empfangen
 			return (1);
 		}
 	}
-	protocol.receive.dataPos++;
+	strpProtocolLink->receive.dataPos++;
 	return (0);
 }
 
@@ -83,20 +87,24 @@ uint8_t uartProtocolNewCommandReceived ()
 	return (0);
 }*/
 
-uint8_t uartProtocolNewCommandValid ()
+uint8_t uartProtocolNewCommandValid (struct strUartProtocol *strpProtocolLink)
 {
 	char uiXORedValue = 0x00;
 	uint8_t i;
-	for (i = 0; i < protocol.receive.dataPos; i++) {
-		uiXORedValue ^= protocol.receive.commandData[i];
+	for (i = 0; i < strpProtocolLink->receive.dataPos; i++) {
+		uiXORedValue ^= strpProtocolLink->receive.commandData[i];
 	}
-	if (uiXORedValue == protocol.receive.commandData[protocol.receive.dataPos]) {
+	if (uiXORedValue == strpProtocolLink->receive.commandData[strpProtocolLink->receive.dataPos]) {
 		return (1);
 	} 	
 	return (0);
 }
 
-uint8_t uartProtocolSendMessage (const char *uipResponse, const uint8_t uiPayloadLength, const uint8_t uiSeqenceNo, const uint8_t uiPacketTypeNo)
+uint8_t uartProtocolSendMessage (struct strUartProtocol *strpProtocolLink,
+		const char *uipResponse,
+		const uint8_t uiPayloadLength,
+		const uint8_t uiSeqenceNo,
+		const uint8_t uiPacketTypeNo)
 {
 	//while (UART_SEND_NONBLOCK ('=') == __ERROR) {}
 	char uiXORedValue = 0x00;
@@ -110,66 +118,73 @@ uint8_t uartProtocolSendMessage (const char *uipResponse, const uint8_t uiPayloa
 		return (__ERROR);
 	}
 
-	protocol.send.commandData[__PACKET_TYPE_POS] = uiPacketTypeNo;
-	protocol.send.commandData[__SEQUENCE_NO_POS] = uiSeqenceNo;
-	protocol.send.commandData[__PACKET_LENGTH_POS] = uiPayloadLength + __HEADER_SIZE;
+	strpProtocolLink->send.commandData[__PACKET_TYPE_POS] = uiPacketTypeNo;
+	strpProtocolLink->send.commandData[__SEQUENCE_NO_POS] = uiSeqenceNo;
+	strpProtocolLink->send.commandData[__PACKET_LENGTH_POS] = uiPayloadLength + __HEADER_SIZE;
 	//cerr << "Sequenznummer : " << (int)uiSeqenceNo << endl;
 	for (i = 0; i < uiPayloadLength; i++) {
-		protocol.send.commandData[i + __HEADER_SIZE] = *(uipResponse + i);
+		strpProtocolLink->send.commandData[i + __HEADER_SIZE] = *(uipResponse + i);
 	}
 	
 	/// Berechnung der Pruefsumme des Pakets
 	for (i = 0; i < uiPayloadLength + __HEADER_SIZE; i++) {
-		uiXORedValue ^= protocol.send.commandData[i];
+		uiXORedValue ^= strpProtocolLink->send.commandData[i];
 	}
-	protocol.send.commandData[uiPayloadLength + __HEADER_SIZE] = uiXORedValue;
+	strpProtocolLink->send.commandData[uiPayloadLength + __HEADER_SIZE] = uiXORedValue;
 	
 	for (i = 0; i <= uiPayloadLength + __HEADER_SIZE; i++) {
-		while (UART_SEND_NONBLOCK (protocol.send.commandData[i]) == __ERROR) {}
+		while (UART_SEND_NONBLOCK (strpProtocolLink->send.commandData[i]) == __ERROR) {}
 	}
 	return (__SUCCESS);
 }
 
-uint8_t uartProtocolSendResponse (const char *uipResponse, const uint8_t uiPayloadLength)
+uint8_t uartProtocolSendResponse (struct strUartProtocol *strpProtocolLink,
+		const char *uipResponse,
+		const uint8_t uiPayloadLength)
 {
-	return (uartProtocolSendMessage (uipResponse, 
+	return (uartProtocolSendMessage (strpProtocolLink,
+			uipResponse, 
 			uiPayloadLength,
-			protocol.receive.commandData[__SEQUENCE_NO_POS],
-			protocol.receive.commandData[__PACKET_TYPE_POS]));
+			strpProtocolLink->receive.commandData[__SEQUENCE_NO_POS],
+			strpProtocolLink->receive.commandData[__PACKET_TYPE_POS]));
 	
 }
 
-uint8_t uartProtocolSendRequest (const char *uipResponse, const uint8_t uiPayloadLength, const uint8_t uiPacketTypeNo)
+uint8_t uartProtocolSendRequest (struct strUartProtocol *strpProtocolLink,
+		const char *uipResponse,
+		const uint8_t uiPayloadLength,
+		const uint8_t uiPacketTypeNo)
 {
-	uartProtocolIncSequenceNo(&protocol.uiSequenceNoSendPos, protocol.uiSequenceNoReceivePos);
-	return (uartProtocolSendMessage(uipResponse,
+	uartProtocolIncSequenceNo(strpProtocolLink, &strpProtocolLink->uiSequenceNoSendPos, strpProtocolLink->uiSequenceNoReceivePos);
+	return (uartProtocolSendMessage(strpProtocolLink,
+			uipResponse,
 			uiPayloadLength,
-			protocol.uiSequenceNoSendPos,
+			strpProtocolLink->uiSequenceNoSendPos,
 			uiPacketTypeNo));
 }
 
-uint8_t uartProtocolGetPacketType ()
+uint8_t uartProtocolGetPacketType (struct strUartProtocol *strpProtocolLink)
 {
-	if ((protocol.receive.commandData[__SEQUENCE_NO_POS] >= __UART_SEQENCE_NO_BEGIN) &&
-			(protocol.receive.commandData[__SEQUENCE_NO_POS] <= __UART_SEQENCE_NO_END)) {
+	if ((strpProtocolLink->receive.commandData[__SEQUENCE_NO_POS] >= __UART_SEQENCE_NO_BEGIN) &&
+			(strpProtocolLink->receive.commandData[__SEQUENCE_NO_POS] <= __UART_SEQENCE_NO_END)) {
 		
 		return (__UART_REMOTE_RESPONSE);
 	}
 	return (__UART_REMOTE_REQUEST);
 }
 
-void uartProtocolClearIncomingCommandBuffer ()
+void uartProtocolClearIncomingCommandBuffer (struct strUartProtocol *strpProtocolLink)
 {
-	protocol.receive.dataPos = 0;
+	strpProtocolLink->receive.dataPos = 0;
 }
 
-void uartProtocolUndoResetProgress ()
+void uartProtocolUndoResetProgress (struct strUartProtocol *strpProtocolLink)
 {
-	protocol.uiReceiveResetCharCount = 0;
-	protocol.uiSendResetCharCount = 0;
+	strpProtocolLink->uiReceiveResetCharCount = 0;
+	strpProtocolLink->uiSendResetCharCount = 0;
 }
 
-uint8_t uartProtocolConnectionReset () {
+uint8_t uartProtocolConnectionReset (struct strUartProtocol *strpProtocolLink) {
 	/// TODO: EinFehlerfall falls der PC beispielsweise
 	/// aufhoert Resets zu senden. Also Timeout etc..
 	/// Code komentieren	
@@ -177,54 +192,54 @@ uint8_t uartProtocolConnectionReset () {
 	char cReceivedChar;
 	if (UART_RECEIVE_NONBLOCK (&cReceivedChar) == __SUCCESS) {
 		if (cReceivedChar == __UART_PROTOCOL_RESET_STATE_1_CHAR) {
-			if (protocol.uiReceiveResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
-				protocol.uiReceiveResetCharCount++;
-			} else if (protocol.uiReceiveResetCharCount > __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
-				uartProtocolUndoResetProgress ();
+			if (strpProtocolLink->uiReceiveResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
+				strpProtocolLink->uiReceiveResetCharCount++;
+			} else if (strpProtocolLink->uiReceiveResetCharCount > __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
+				uartProtocolUndoResetProgress (strpProtocolLink);
 			}
 		} else if (cReceivedChar == __UART_PROTOCOL_RESET_STATE_2_CHAR) {
-			if (protocol.uiReceiveResetCharCount <  __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
-				uartProtocolUndoResetProgress ();
-			} else if (protocol.uiReceiveResetCharCount < __UART_PROTOCOL_RESET_STATE_2_LENGTH) {
-				protocol.uiReceiveResetCharCount++;
+			if (strpProtocolLink->uiReceiveResetCharCount <  __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
+				uartProtocolUndoResetProgress (strpProtocolLink);
+			} else if (strpProtocolLink->uiReceiveResetCharCount < __UART_PROTOCOL_RESET_STATE_2_LENGTH) {
+				strpProtocolLink->uiReceiveResetCharCount++;
 			} else {
-				uartProtocolUndoResetProgress ();
+				uartProtocolUndoResetProgress (strpProtocolLink);
 			}
 		} else {
-			uartProtocolUndoResetProgress ();
+			uartProtocolUndoResetProgress (strpProtocolLink);
 		}
 	}
-	if (protocol.uiReceiveResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
+	if (strpProtocolLink->uiReceiveResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
 		if (UART_SEND_NONBLOCK (__UART_PROTOCOL_RESET_STATE_1_CHAR) == __SUCCESS) {
-			if (protocol.uiSendResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
-				protocol.uiSendResetCharCount++;
+			if (strpProtocolLink->uiSendResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
+				strpProtocolLink->uiSendResetCharCount++;
 			}
 		}
-	} else if (protocol.uiSendResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
+	} else if (strpProtocolLink->uiSendResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
 		if (UART_SEND_NONBLOCK (__UART_PROTOCOL_RESET_STATE_1_CHAR) == __SUCCESS) {
-			if (protocol.uiSendResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
-				protocol.uiSendResetCharCount++;
+			if (strpProtocolLink->uiSendResetCharCount < __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
+				strpProtocolLink->uiSendResetCharCount++;
 			}
 		}
-	} else if (protocol.uiSendResetCharCount < __UART_PROTOCOL_RESET_STATE_2_LENGTH) {
+	} else if (strpProtocolLink->uiSendResetCharCount < __UART_PROTOCOL_RESET_STATE_2_LENGTH) {
 		if (UART_SEND_NONBLOCK (__UART_PROTOCOL_RESET_STATE_2_CHAR) == __SUCCESS) {
-			protocol.uiSendResetCharCount++;
+			strpProtocolLink->uiSendResetCharCount++;
 		}
-	} else if (protocol.uiReceiveResetCharCount == __UART_PROTOCOL_RESET_STATE_2_LENGTH) {
-		protocol.uiUARTWatchdog = 0;
+	} else if (strpProtocolLink->uiReceiveResetCharCount == __UART_PROTOCOL_RESET_STATE_2_LENGTH) {
+		strpProtocolLink->uiUARTWatchdog = 0;
 		return (__COMPLETE);
 	}
 	return (__INCOMPLETE);
 }
 
 
-uint8_t uartProtocolDoHandlerStep ()
+uint8_t uartProtocolDoHandlerStep (struct strUartProtocol *strpProtocolLink)
 {
 	//uartPutChar (49);
-	switch (protocol.uiConnectionState) {
+	switch (strpProtocolLink->uiConnectionState) {
 		case __PROTOCOL_STATE_COMMAND_INCOMLETE: {
 			//while (uartPutString ("protocol state: incomplete\n") == __ERROR) {}
-			switch (uartProtocolNewCommandReceived ()) {
+			switch (uartProtocolNewCommandReceived (strpProtocolLink)) {
 			/// TODO: hart kodierte Zahlen durch defines ersetzen
 			/// und die faelle alle noch etwas besser abhandeln
 			
@@ -236,13 +251,13 @@ uint8_t uartProtocolDoHandlerStep ()
 				case 1: {
 					/// Paket wurde komplett empfangen
 					//while (uartPutString ("case: aok \n") == __ERROR) {}
-					protocol.uiConnectionState = __PROTOCOL_STATE_COMMAND_COMPLETE;
+					strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_COMMAND_COMPLETE;
 					break;
 				}
 				case 2: {
 					/// laengen Fehler
 					//while (uartPutString ("case: laengenfehler \n") == __ERROR) {}
-					protocol.uiConnectionState =  __PROTOCOL_STATE_CONNECTION_RESET;
+					strpProtocolLink->uiConnectionState =  __PROTOCOL_STATE_CONNECTION_RESET;
 					break;
 				}
 				case 3: {
@@ -253,7 +268,7 @@ uint8_t uartProtocolDoHandlerStep ()
 				}
 				case 4: {
 					/// PC hat RESET gesendet
-					protocol.uiConnectionState =  __PROTOCOL_STATE_CONNECTION_RESET;
+					strpProtocolLink->uiConnectionState =  __PROTOCOL_STATE_CONNECTION_RESET;
 					break;
 				}
 				default: {
@@ -267,10 +282,10 @@ uint8_t uartProtocolDoHandlerStep ()
 
 		case __PROTOCOL_STATE_COMMAND_COMPLETE: {
 			//while (uartPutString ("protocol state: complete\n") == __ERROR) {}
-			if (uartProtocolNewCommandValid () == 1) {
-				protocol.uiConnectionState = __PROTOCOL_STATE_COMMAND_VALID;
+			if (uartProtocolNewCommandValid (strpProtocolLink) == 1) {
+				strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_COMMAND_VALID;
 			} else {
-				protocol.uiConnectionState = __PROTOCOL_STATE_COMMAND_INVALID;
+				strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_COMMAND_INVALID;
 			}
 			break;
 		}
@@ -280,7 +295,7 @@ uint8_t uartProtocolDoHandlerStep ()
 			/// TODO: Momentan wird nur nach BIT-Fehlern gesucht.
 			/// Später noch den Fall der Logik-Fehler betrachten.
 			//while (uartPutString ("\ncommand invalid.\n") == __ERROR) {}
-			protocol.uiConnectionState = __PROTOCOL_STATE_CONNECTION_RESET;
+			strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_CONNECTION_RESET;
 			break;
 		}
 
@@ -291,8 +306,8 @@ uint8_t uartProtocolDoHandlerStep ()
 				/// Gehe wieder an den Anfang
 				/// und warte auf ein neues
 				/// Kommando.
-			uartProtocolClearIncomingCommandBuffer ();
-			protocol.uiConnectionState = __PROTOCOL_STATE_COMMAND_INCOMLETE;
+			uartProtocolClearIncomingCommandBuffer (strpProtocolLink);
+			strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_COMMAND_INCOMLETE;
 			//} else {
 				/// Die Anfrage vom PC macht keinen Sinn.
 			//	protocol.uiConnectionState = __PROTOCOL_STATE_CONNECTION_RESET;
@@ -303,15 +318,15 @@ uint8_t uartProtocolDoHandlerStep ()
 		case __PROTOCOL_STATE_CONNECTION_RESET: {
 			//while (uartPutString ("protocol state: reset\n") == __ERROR) {}
 			/// TODO: Hier fehlt auch noch was...
-			if (uartProtocolConnectionReset () == __COMPLETE) {
+			if (uartProtocolConnectionReset (strpProtocolLink) == __COMPLETE) {
 				//while (uartPutString ("reset sequence complete.\n") == __ERROR) {}				
-				protocol.uiConnectionState = __PROTOCOL_STATE_COMMAND_INCOMLETE;
-				uartProtocolUndoResetProgress ();
-				uartProtocolClearIncomingCommandBuffer ();
+				strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_COMMAND_INCOMLETE;
+				uartProtocolUndoResetProgress (strpProtocolLink);
+				uartProtocolClearIncomingCommandBuffer (strpProtocolLink);
 				//while (uartPutString ("\nreset complete.\n") == __ERROR) {}
 				//#ifdef __cplusplus
-				protocol.uiSequenceNoReceivePos = protocol.uiSequenceNoBegin;
-				protocol.uiSequenceNoSendPos = protocol.uiSequenceNoBegin;
+				strpProtocolLink->uiSequenceNoReceivePos = strpProtocolLink->uiSequenceNoBegin;
+				strpProtocolLink->uiSequenceNoSendPos = strpProtocolLink->uiSequenceNoBegin;
 				//#ifdef __DEBUG__
 				//printDebugMsg ("Reset complete.\n");
 				//#endif
@@ -328,7 +343,7 @@ uint8_t uartProtocolDoHandlerStep ()
 			break;
 		}
 	}
-	return (protocol.uiConnectionState);
+	return (strpProtocolLink->uiConnectionState);
 }
 
 #endif

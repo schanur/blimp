@@ -27,7 +27,7 @@ void initStepper (struct stepper* cStepperToInit, const uint8_t uiStepperNo, con
 	}
 	
 	/// FIXME: Das geht schief (letzten Wert auf eprom schreiben oder justieren)
-	caStepper[uiStepperNo].uiSpeed = 5;
+	//caStepper[uiStepperNo].uiSpeed = 5;
 
 	//uiStepperWatch[uiStepperNo] = 0;
 	//uiStepperWatch[uiStepperNo] = 10;

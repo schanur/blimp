@@ -15,16 +15,28 @@
 //#include "io/ring_buffer.c"
 //#include "io/print_dtype.c"
 
+#define __ISR_USE_UART
+#define __ISR_USE_STEPPER
 
-uint8_t uiTimerDiv;
+#ifdef __ISR_USE_UART
+	#include "io/uart_buffer.h"
+#endif
+#ifdef __ISR_USE_STEPPER
+	#include "devices/stepper_motor.h"
+	extern struct stepper caStepper[4];
+#endif
 
+extern uint8_t uiGlobalError;
+
+//uint8_t uiTimerDiv;
 
 void registerAllInterrupts();
 
-#ifdef __UART_H__
+#ifdef __ISR_USE_UART
 ISR (USART_RX_vect);
 ISR (USART_UDRE_vect);
 #endif
+
 ISR (TIMER2_OVF_vect);
 
 ///FIXME: die anderen Funktionen auch anlegen

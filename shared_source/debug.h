@@ -5,26 +5,32 @@
 
 #include "protocolNumbers.h"
 
-#ifndef __cplusplus
+#if __PLATFORM_SPECIFICS_H__ == 2
+	#include <avr/io.h>
+	#include <avr/interrupt.h>
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
+	#include "../blimp__atmega_mc/defines.h"
+	#include "../blimp__atmega_mc/makros.h"
+	//#include "../blimp__atmega_mc/io/uart.c"
+	#include "uart_protocol_handler.h"
 
-#include "../blimp__atmega_mc/defines.h"
-#include "../blimp__atmega_mc/makros.h"
-//#include "../blimp__atmega_mc/io/uart.c"
-#include "uart_protocol_handler.h"
-#else
-#include <iostream>
-#include <cstdlib>
+	extern struct strUartProtocol strPCLink;
+
+#elif __PLATFORM_SPECIFICS_H__ == 1
+	#include <iostream>
+	#include <cstdlib>
 #endif
+
 
 #define __DEBUG_TRANSACTION_OFF		0
 #define __DEBUG_TRANSACTION_START	1
 #define __DEBUG_TRANSACTION_END		2
 
 /// Forward declaration
-uint8_t uartProtocolSendRequest (const char*, const uint8_t, const uint8_t);
+/*uint8_t uartProtocolSendRequest (struct strUartProtocol *strProtocolLink,
+		const char *uipResponse,
+		const uint8_t uiPayloadLength,
+		const uint8_t uiPacketTypeNo);*/
 
 void printDebugMsg (const char *ipDebugMsg);
 void debugMsgTransactionStart ();

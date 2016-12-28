@@ -7,6 +7,7 @@
 #include "../../shared_source/uart_protocol_handler.h"
 #include "../../shared_source/byte_order.h"
 #include "../../shared_source/print_dtype.h"
+#include "../../shared_source/debug.h"
 
 #include "i2c.h"
 

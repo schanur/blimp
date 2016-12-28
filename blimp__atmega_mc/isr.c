@@ -29,7 +29,7 @@ ISR (USART_RX_vect)  //USART_RXC
 	}
 	const char cReceivedChar = UDR0;
 
-	if (writeToBuffer (&strUARTLink.receive, cReceivedChar) == __ERROR) {
+	if (writeToBuffer (&strPCLink.receive, cReceivedChar) == __ERROR) {
 		//g.uiOccuredErrorCode = __ERROR_RECEIVE_BUFFER_OVERFLOW;
 	}
 	if (protocol.uiUARTWatchdog < 100) {
