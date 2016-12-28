@@ -1,99 +1,30 @@
-PRG            = main
-OBJ            = main.o
+PCC=g++
 
-OPTIMIZE       = -Os
+MCU_TARGET = atmega168
 
-DEFS           =
-LIBS           =
+PC_OPTIMIZE = -O3
+#-pedantic
+PC_WARNINGS = -std=c++98 -Wall -Werror
+PC_CFLAGS = $(PC_WARNINGS) $(PC_OPTIMIZE)
 
-CC             = g++
+CFLAGS = -c $(PC_WARNINGS) $(PC_OPTIMIZE)
 
-# Override is only needed by avr-lib build system.
 
-override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
-override LDFLAGS       = -Wl,-Map,$(PRG).map
+all: Exceptions.o \
+		Vector.o \
+		Cube.o \
+		CubePosition.o \
+		Array3D.o \
+		CacheList.o \
+		CircleMath.o \
+		Coordinate.o \
+		CoordinateSystemTranslation.o
 
-OBJCOPY        = avr-objcopy
-OBJDUMP        = avr-objdump
+#Array3D.o : Array3D.cpp
+#	$(PCC) $(CFLAGS) -c $< -o $@
 
-all: $(PRG).elf lst text eeprom
-
-$(PRG).elf: $(OBJ)
-
-	echo $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
-
-# dependency:
-# demo.o: demo.c iocompat.h
+%.o : %.cpp
+	$(PCC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rfv *.o *.gch $(PRG).elf *.eps *.png *.pdf *.bak 
-	rm -rfv *.lst *.map $(EXTRA_CLEAN_FILES)
-	rm -rfv ../shared_source/*.o ../shared_source/*.gch
-	rm -rfv io/*.o io/*.gch
-	
-lst:  $(PRG).lst
-
-%.lst: %.elf
-	$(OBJDUMP) -h -S $< > $@
-
-# Rules for building the .text rom images
-
-text: hex bin srec
-
-hex:  $(PRG).hex
-bin:  $(PRG).bin
-srec: $(PRG).srec
-
-%.hex: %.elf
-	$(OBJCOPY) -j .text -j .data -O ihex $< $@
-
-%.srec: %.elf
-	$(OBJCOPY) -j .text -j .data -O srec $< $@
-
-%.bin: %.elf
-	$(OBJCOPY) -j .text -j .data -O binary $< $@
-
-# Rules for building the .eeprom rom images
-
-eeprom: ehex ebin esrec
-
-ehex:  $(PRG)_eeprom.hex
-ebin:  $(PRG)_eeprom.bin
-esrec: $(PRG)_eeprom.srec
-
-%_eeprom.hex: %.elf
-	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@ \
-	|| { echo empty $@ not generated; exit 0; }
-
-%_eeprom.srec: %.elf
-	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O srec $< $@ \
-	|| { echo empty $@ not generated; exit 0; }
-
-%_eeprom.bin: %.elf
-	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O binary $< $@ \
-	|| { echo empty $@ not generated; exit 0; }
-
-# Every thing below here is used by avr-libc's build system and can be ignored
-# by the casual user.
-
-FIG2DEV                 = fig2dev
-EXTRA_CLEAN_FILES       = *.hex *.bin *.srec
-
-dox: eps png pdf
-
-eps: $(PRG).eps
-png: $(PRG).png
-pdf: $(PRG).pdf
-
-%.eps: %.fig
-	$(FIG2DEV) -L eps $< $@
-
-%.pdf: %.fig
-	$(FIG2DEV) -L pdf $< $@
-
-%.png: %.fig
-	$(FIG2DEV) -L png $< $@
-
-modules:
-	find -name "*.c" |xargs $(CC) $(CFLAGS) $(LDFLAGS) -c 
+	rm -fv *.o *.gch

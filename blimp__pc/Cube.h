@@ -11,8 +11,10 @@
 #ifndef __CUBE_H__
 #define __CUBE_H__
 
-#include <sys/types.h>
-#include "defines.h"
+//#include <sys/types.h>
+#include "inttypes.h"
+
+//#include "defines.h"
 
 #define __CUBE_OCCUPIED 0x00
 

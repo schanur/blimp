@@ -57,13 +57,13 @@ double Distance :: distance ()
     if (bDistanceValid) { return (dDistance); }
     if (!bStartCoordsValid | !bEndCoordsValid) { throw GeneralException (); }	
     
-	/// Die externe Funktion "earth_distance" hat eione höhere
-	/// Genauigkeit, da sie auf einen Rotationselypsoiden rechnet
+	/// Die externe Funktion "earth_distance" hat eine höhere
+	/// Genauigkeit, da sie auf einem Rotationselypsoiden rechnet
 	/// anstatt auf einer Kugel.
 	/// Allerdings funktioniert diese nicht, wenn die beiden Punkte
 	/// dicht bei einander oder dicht bei den Polen liegen.
 	/// Fuer diese beiden Faelle wird auf eine Ersatzfunktion
-	/// zurueck gegriffen.
+	/// zurueck gegriffen, welche auf einer Kugel rechnet.
 
 	dDistance = earth_distance (cStartPoint->latitude.decimal (),
 			cStartPoint->longitude.decimal (),

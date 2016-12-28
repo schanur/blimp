@@ -11,8 +11,8 @@
 #include <pthread.h>
 
 #include "defines.h"
-#include "Exceptions.cpp"
-#include "IPCDataStructures.cpp"
+#include "Exceptions.h"
+#include "IPCDataStructures.h"
 
 
 using namespace std;

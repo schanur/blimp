@@ -9,17 +9,19 @@
 #include <iostream>
 #include <string>
 
-#include "defines.h"
-#include "Exceptions.cpp"
-#include "CircleMath.cpp"
-#include "Vector.cpp"
+//#include "defines.h"
+#include "Exceptions.h"
+#include "CircleMath.h"
+#include "Vector.h"
+
+
+#ifndef __PI
+#define __PI 3.141592653589793
+#endif
 
 #define __ALTITUDE_DEFAULT 100.
 #define __ALTITUDE_MIN -100.
 #define __ALTITUDE_MAX 1000.
-
-using namespace std;
-
 
 
 typedef Vector CartesianCoordinate;

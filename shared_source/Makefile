@@ -4,7 +4,7 @@ PCC=g++
 MCU_TARGET = atmega168
 
 MC_OPTIMIZE = -Os
-PC_OPTIMIZE = -Os
+PC_OPTIMIZE = -O3
 MC_WARNINGS = -std=c99 -Wall -pedantic -Werror
 PC_WARNINGS = -std=c++98 -Wall -pedantic -Werror
 

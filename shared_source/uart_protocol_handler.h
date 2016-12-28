@@ -53,7 +53,7 @@
 
 /*#include "debug.h"*/
 
-/* 
+/** 
  * Protokollbeschreibung:
  * Byte 0:         Pakettyp-Nummer
  * Byte 1:         Paket Sequenznummer (fortlaufende Nummer (wird vom PC generiert))

@@ -1,18 +1,19 @@
 #ifndef __EXCEPTIONS_H__
 #define __EXCEPTIONS_H__
 
-using namespace std;
+#include <string>
+#include <inttypes.h>
 
 class GeneralException
 {
     private: uint32_t uiExceptionType;
-    private: string sErrorMessage;
+    private: std::string sErrorMessage;
     
     public: uint32_t exceptionType ();
     public: void exceptionType (uint32_t uiExceptionTypeToSet);
     
-    public: string errorMessage ();
-    public: void errorMessage (string sErrorMessageToSet);
+    public: std::string errorMessage ();
+    public: void errorMessage (std::string sErrorMessageToSet);
 };
 
 #endif

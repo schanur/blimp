@@ -13,7 +13,8 @@ struct uartBuffer {
 int8_t initUartBuffer (struct uartBuffer *strpUartBuffer, uint8_t uiReceiveBufferSize, uint8_t uiSendBufferSize);
 void destroyUartBuffer (struct uartBuffer *strpUartBuffer);
 
-/* Interrupt-Handler der aufgerufen wird,
+/**
+ * Interrupt-Handler der aufgerufen wird,
  * wenn ein neues Zeichen auf dem RS232-Bus
  * empfangen wurde. Das empfange Zeichen
  * wird auf den Receive Buffer geschrieben.
@@ -22,7 +23,8 @@ void destroyUartBuffer (struct uartBuffer *strpUartBuffer);
  */
 /*void intHandlerCharReceivedOnRS232 ();*/
 
-/* Interrupt-Handler der aufgerufen wird,
+/**
+ * Interrupt-Handler der aufgerufen wird,
  * wenn ein Zeichen auf dem RS232-Bus
  * gesendet wurde. Die Funktion prueft ob
  * weitere Zeichen auf dem Buffer stehen,

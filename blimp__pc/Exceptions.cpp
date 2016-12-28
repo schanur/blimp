@@ -13,12 +13,12 @@ void GeneralException :: exceptionType (uint32_t uiExceptionTypeToSet)
     uiExceptionType = uiExceptionTypeToSet;
 }
 
-string GeneralException :: errorMessage ()
+std::string GeneralException :: errorMessage ()
 {
     return sErrorMessage;
 }
 
-void GeneralException :: errorMessage (string sErrorMessageToSet)
+void GeneralException :: errorMessage (std::string sErrorMessageToSet)
 {
     sErrorMessage = sErrorMessageToSet;
 }

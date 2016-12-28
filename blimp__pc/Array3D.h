@@ -18,7 +18,7 @@
 #include <bitset>
 #include <stdexcept>
 
-#include "CubePosition.cpp"
+#include "CubePosition.h"
 
 template <int XDim, int YDim, int ZDim>
 int calcBitPosition (const CubePosition &cCubePos);

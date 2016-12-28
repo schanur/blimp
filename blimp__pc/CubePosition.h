@@ -10,7 +10,9 @@
 #ifndef __CUBE_POSITION_H__
 #define __CUBE_POSITION_H__
 
-#include <sys/types.h>
+#include <inttypes.h>
+#include <cstdlib>
+#include <iostream>
 #include <cmath>
 
 #include "signum.h"

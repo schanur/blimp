@@ -12,12 +12,14 @@
 #ifndef __CACHELIST_H__
 #define __CACHELIST_H__
 
-#include <sys/types.h>
+#include <inttypes.h>
+#include <assert.h>
 
-#include "defines.h"
+//#include "defines.h"
 
-/// Anzahl der Cache Groesse wenn eine Instanz.
-/// den parameterlosen Constructor verwendet.
+/** Anzahl der Cache Groesse wenn eine Instanz.
+ * den parameterlosen Constructor verwendet.
+ */
 #define __CACHE_LIST_DEFAULT_SIZE 8
 
 using namespace std;

@@ -13,7 +13,7 @@ CartesianCoordinate spherical2Cartesician (const SphericalCoordinate& cSpherical
 	CartesianCoordinate cCartesianCoord (
 		dZenithCosRadius * cos (cSphericalCoord.dAzimuth),
 		dZenithCosRadius * sin (cSphericalCoord.dAzimuth),
-		cSphericalCoord.dRadialDistance * sin (cSphericalCoord.dZenith);
+		cSphericalCoord.dRadialDistance * sin (cSphericalCoord.dZenith));
 	return (cCartesianCoord);
 }
 

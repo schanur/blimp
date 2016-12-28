@@ -112,7 +112,7 @@ Latitude :: Latitude (double dInitDecimalLatitude)
 		bValid = false;	    
 		//throw GeneralException ();
 	} else {
-	    cerr << "warning: Latitude has value: " << dInitDecimalLatitude << endl;
+	    std::cerr << "warning: Latitude has value: " << dInitDecimalLatitude << std::endl;
 	    dDecimal = -90.;
 	}
     } else if (dInitDecimalLatitude > 90.) {
@@ -120,7 +120,7 @@ Latitude :: Latitude (double dInitDecimalLatitude)
 		bValid = false;
 		//throw GeneralException ();
 	} else {
-	    cerr << "warning: Latitude has value: " << dInitDecimalLatitude << endl;
+	    std::cerr << "warning: Latitude has value: " << dInitDecimalLatitude << std::endl;
 	    dDecimal = 90.;
 	}
     }
@@ -144,7 +144,7 @@ Longitude :: Longitude (double dInitDecimalLongitude)
 		bValid = false;
 		throw GeneralException ();
 	} else {
-	    cerr << "warning: Longitude has value: " << dInitDecimalLongitude << endl;
+	    std::cerr << "warning: Longitude has value: " << dInitDecimalLongitude << std::endl;
 	    dDecimal = -180.;
 	}
     } else if (dInitDecimalLongitude > 180.) {
@@ -153,7 +153,7 @@ Longitude :: Longitude (double dInitDecimalLongitude)
 		throw GeneralException ();
 	} else {
 	    dDecimal = 180.;
-	    cerr << "warning: Longitude has value: " << dInitDecimalLongitude << endl;
+	    std::cerr << "warning: Longitude has value: " << dInitDecimalLongitude << std::endl;
 	}
     }
 	bValid = true;
@@ -169,9 +169,9 @@ void Altitude :: initValues (double dInitAltitude)
 	bValid = false;
 	dAltitude = dInitAltitude;
 	if (dAltitude < __ALTITUDE_MIN) {
-		throw string ("yellow submarine");
+		throw std::string ("yellow submarine");
 	} else if (dAltitude > __ALTITUDE_MAX) {
-		throw string ("baehm");
+		throw std::string ("baehm");
 	} else {
 		bValid = true;
 	}
@@ -179,7 +179,7 @@ void Altitude :: initValues (double dInitAltitude)
 
 bool Altitude :: valid () { return bValid; }
 double Altitude :: decimal () { return dAltitude; }
-double Altitude :: feet () { throw string ("Altitude :: feed (): unsuported"); }
+double Altitude :: feet () { throw std::string ("Altitude :: feed (): unsuported"); }
 
 //######################################################################
 

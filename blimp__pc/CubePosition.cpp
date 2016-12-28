@@ -33,16 +33,16 @@ CubePosition CubePosition :: difference (const CubePosition &cCubePositionToDiff
 	iXDiff = (int64_t) cCubePositionToDiff.iXPos - iXPos;
 	iYDiff = (int64_t) cCubePositionToDiff.iYPos - iYPos;
 	iZDiff = (int64_t) cCubePositionToDiff.iZPos - iZPos;
-	if (abs (iXDiff) > __INT32_MAX) {
-		cerr << "CubePosition :: differnce: xDiff value to high." << endl;
+	if (abs ((int32_t)iXDiff) > __INT32_MAX) {
+		std::cerr << "CubePosition :: differnce: xDiff value to high." << endl;
 		iXDiff = signum (iXDiff) * __INT32_MAX;
 	}
 	if (abs (iYDiff) > __INT32_MAX) {
-		cerr << "CubePosition :: differnce: yDiff value to high." << endl;
+		std::cerr << "CubePosition :: differnce: yDiff value to high." << endl;
 		iYDiff = signum (iYDiff) * __INT32_MAX;
 	}
 	if (abs (iZDiff) > __INT32_MAX) {
-		cerr << "CubePosition :: differnce: zDiff value to high." << endl;
+		std::cerr << "CubePosition :: differnce: zDiff value to high." << endl;
 		iZDiff = signum (iZDiff) * __INT32_MAX;
 	}
 	cDiff.iXPos = (int32_t) iXDiff;
@@ -70,9 +70,9 @@ uint32_t CubePosition :: manhattanDistance (const CubePosition cCubePos) const
 
 void CubePosition :: printPos () const
 {
-	cerr << "  X: " << iXPos;// << endl;
-	cerr << "  Y: " << iYPos;// << endl;
-	cerr << "  Z: " << iZPos << endl;
+	std::cerr << "  X: " << iXPos;// << endl;
+	std::cerr << "  Y: " << iYPos;// << endl;
+	std::cerr << "  Z: " << iZPos << endl;
 }
 
 bool CubePosition :: operator== (const class CubePosition &cCubePositionToCompare) const
