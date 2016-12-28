@@ -1,15 +1,7 @@
 #ifndef __PRINT_DTYPES_C__
 #define __PRINT_DTYPES_C__
 
-#ifndef _cplusplus
-//#include "../blimp__atmega_mc/io/uart.c"
-#include <stdlib.h>
-#else
-#include <stdlib.h>
-#endif
-
-//#include "debug.c"
-
+#include "print_dtype.h"
 
 void U32IntToString (char *buf, uint32_t number)
 {

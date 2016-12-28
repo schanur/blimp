@@ -86,7 +86,7 @@ void debugMsgTransactionEnd ()
 
 void panic ()
 {
-	printDebugMsg ("\nPANIC!!11elf\n");
+	printDebugMsg ("\nPANIC!\n");
 	#ifndef __cplusplus
 	while (1);
 	#else

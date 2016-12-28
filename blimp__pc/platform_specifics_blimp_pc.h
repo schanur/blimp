@@ -30,10 +30,7 @@
 		#define __UART_SEQENCE_NO_END		31
 
 		/// Makros fuer das Protokoll
-		//#define UART_RECEIVE_NONBLOCK ser->getChar
-		//#define UART_SEND_NONBLOCK ser->putChar
-		//#define UART_RECEIVE_NONBLOCK(x) uartGetChar(x)
-		//#define UART_SEND_NONBLOCK(x) uartPutChar(x)
+
 
 		#define __ENTER_CRITICAL_SECTION //
 		#define __LEAVE_CRITICAL_SECTION //

@@ -20,15 +20,21 @@ debug__mc : debug.c platform_specifics_macros.h
 debug__pc : debug.c platform_specifics_macros.h
 	$(PCC) $(PC_CFLAGS) -c debug.c -o debug__pc.o
 
+print_dtype__mc : print_dtype.c platform_specifics_macros.h
+	$(MCC) $(MC_CFLAGS) -c print_dtype.c -o print_dtype__mc.o
+
+print_dtype__pc : print_dtype.c platform_specifics_macros.h
+	$(PCC) $(PC_CFLAGS) -c print_dtype.c -o print_dtype__pc.o
+
 uart_protocol_handler__mc : uart_protocol_handler.c platform_specifics_macros.h
 	$(MCC) $(MC_CFLAGS) -c uart_protocol_handler.c -o uart_protocol_handler__mc.o
 
 uart_protocol_handler__pc : uart_protocol_handler.c platform_specifics_macros.h
 	$(PCC) $(PC_CFLAGS) -c uart_protocol_handler.c -o uart_protocol_handler__pc.o
 
-mc : byte_order__mc debug__mc uart_protocol_handler__mc
+mc : byte_order__mc debug__mc uart_protocol_handler__mc print_dtype__mc
 
-pc : byte_order__pc debug__pc uart_protocol_handler__pc
+pc : byte_order__pc debug__pc uart_protocol_handler__pc print_dtype__pc
 
 all : mc pc
 
