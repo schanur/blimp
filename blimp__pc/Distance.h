@@ -8,6 +8,8 @@
 #include <string>
 #include <math.h>
 
+#include <gps.h>
+
 #include "defines.h"
 #include "CircleMath.cpp"
 #include "Coordinate.cpp"
@@ -20,16 +22,18 @@ class Distance
     public: GeoCoordinate *cStartPoint, *cEndPoint;
     private: bool bStartCoordsValid, bEndCoordsValid;
     private: bool bDirectionValid, bDistanceValid;
-    private: bool bSame;    
+    private: bool bSame;
     
     private: double dSphericAngle;
     private: double dDirection;
     private: double dDistance;
     
-    private: void calcSphericAngle ();
-
-    public: double direction ();
-    public: double distance ();
+    private: 
+		void calcSphericAngle ();
+		double distanceOnSphere ();
+    public: 
+		double direction ();
+    	double distance ();
 
     //public: bool reached ();
 

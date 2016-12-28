@@ -26,5 +26,5 @@ int main (void)
 			Altitude(100.)));
 	cout << "distance self:  " << self.distance () << endl;
 	cout << "distance gps.h: " << earth_distance (lat1, lon1, lat2, lon2) << endl;
-
+	cout << "direction self: " << self.direction () << endl;
 }

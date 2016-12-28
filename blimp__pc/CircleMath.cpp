@@ -3,12 +3,12 @@
 
 double rad2deg (double radVal)
 {
-    return (radVal * __PI / 180);
+	return (radVal * 180 / __PI);
 }
 
 double deg2rad (double degVal)
 {
-    return (degVal * 180 / __PI);
+	return (degVal * __PI / 180);
 }
 
 #endif

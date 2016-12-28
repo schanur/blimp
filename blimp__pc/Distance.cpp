@@ -27,7 +27,7 @@ double Distance :: direction ()
     if (bDirectionValid) { return (dDirection); }
     if (!bStartCoordsValid | !bEndCoordsValid) { throw GeneralException (); }	
     if (!bDistanceValid) {
-	calcSphericAngle ();
+		calcSphericAngle ();
     }
     bDirectionValid = true;
     /*dDirection = acos ((sin (cEndPoint->latitude->decimal ())
@@ -42,29 +42,77 @@ double Distance :: direction ()
     cerr << cStartPoint->latitude.decimal () << endl;
     //cerr << cEndPoint->latitude->decimal () << endl;
     //cerr << cEndPoint->latitude->decimal () << endl;
-    dDirection = (sin (90. - deg2rad(cEndPoint->latitude.decimal ()))
+    dDirection = rad2deg (acos (
+			sin (deg2rad(cStartPoint->latitude.decimal ()))
+			* sin (deg2rad(cEndPoint->latitude.decimal ()))
+			+ cos (deg2rad(cStartPoint->latitude.decimal ()))
+			* cos (deg2rad(cEndPoint->latitude.decimal ()))
+			* cos (deg2rad(cEndPoint->longitude.decimal ())
+					- deg2rad(cStartPoint->longitude.decimal ()))));
+
+	/*dDirection = (sin (deg2rad(cEndPoint->latitude.decimal ()))
 	    - (sin (deg2rad(cStartPoint->latitude.decimal ()))
 	    * cos (dSphericAngle)))
-	    / (cos (deg2rad(cEndPoint->latitude.decimal ()))
-	    * sin (dSphericAngle));
-    cerr << "direction vor acos:  "<< dDirection << endl;
-    dDirection = acos (dDirection);// * (360. / (2 * __PI));
-    cerr << "direction nach acos: " << dDirection << endl;
-    if (cStartPoint->longitude.decimal () < cEndPoint->longitude.decimal ()) {    
-	dDirection = 360. - dDirection;
+	    / (cos (deg2rad(cStartPoint->latitude.decimal ()))
+	    * sin (dSphericAngle));*/
+
+	/*dDirection = (sin (cEndPoint->latitude.decimal ())
+	    - (sin (cStartPoint->latitude.decimal ())
+	    * cos (dSphericAngle)))
+	    / (cos (cStartPoint->latitude.decimal ())
+	    * sin (dSphericAngle));*/
+    //cerr << "direction vor acos:  "<< dDirection << endl;
+    //dDirection = acos (dDirection) * (360. / (2 * __PI));
+    //cerr << "direction nach acos: " << dDirection << endl;
+     if (cStartPoint->longitude.decimal () > cEndPoint->longitude.decimal ()) {    
+		dDirection = 360. - dDirection;
     }
     return (dDirection);
+
+	//*****************************
+     /*       kurswinkel = (System.Math.Sin(x_dezgrad_zweite) - System.Math.Sin(x_dezgrad_erste) * System.Math.Cos(winkel)) / (System.Math.Cos(x_dezgrad_erste) * System.Math.Sin(winkel));
+
+            double degrees = (System.Math.Acos(kurswinkel) * (360 / (2 * System.Math.PI)));
+            if (y_dezgrad_erste < y_dezgrad_zweite)
+            {
+                return (degrees);
+            }
+            else 
+            {
+                return (360 - degrees);
+            }
+
+*/
 }
 
 double Distance :: distance ()
 {
     if (bDistanceValid) { return (dDistance); }
     if (!bStartCoordsValid | !bEndCoordsValid) { throw GeneralException (); }	
-    if (!bDirectionValid) {
-	calcSphericAngle ();
+    
+	/// Die externe Funktion "earth_distance" hat eione höhere
+	/// Genauigkeit, da sie auf einen Rotationselypsoiden rechnet
+	/// anstatt auf einer Kugel.
+	/// Allerdings funktioniert diese nicht, wenn die beiden Punkte
+	/// dicht bei einander oder dicht bei den Polen liegen.
+	/// Fuer diese beiden Faelle wird auf eine Ersatzfunktion
+	/// zurueck gegriffen.
+
+	dDistance = earth_distance (cStartPoint->latitude.decimal (),
+			cStartPoint->longitude.decimal (),
+			cEndPoint->latitude.decimal (),
+			cEndPoint->longitude.decimal ());
+
+	//if (dDistance != NAN) {
+	if (!isnan(dDistance)) {
+		return (dDistance);
+	}
+	cerr << "double Distance :: distance (void): warning: NAN, using fallback algorithm." << endl;
+	if (!bDirectionValid) {
+		calcSphericAngle ();
     }
     bDistanceValid = true;
-    dDistance = ((dSphericAngle * (2. * __PI) / 360.)) * __EARTH_RADIUS;
+	dDistance = ((dSphericAngle * (2. * __PI) / 360.)) * __EARTH_RADIUS;
     return (dDistance);
 }
 
