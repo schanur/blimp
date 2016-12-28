@@ -17,8 +17,8 @@ void Distance :: calcSphericAngle ()
     dSphericAngle = (acos (
 	    (sin (dCircStartLatitude) * sin (dCircEndLatitude))
 	    + (cos (dCircStartLatitude) * cos (dCircEndLatitude)
-	    * cos (dCircEndLongitude - dCircStartLongitude))));
-	    //* (360. / (2. * __PI));
+	    * cos (dCircEndLongitude - dCircStartLongitude))))
+	    * (360. / (2. * __PI));
     cerr << "sphericAngle: " << dSphericAngle << endl;
 }
 
@@ -38,19 +38,19 @@ double Distance :: direction ()
 	    * (360. / (2. * __PI));*/
     
     cerr << "direction ()" << endl;
-    cerr << cEndPoint->latitude->decimal () << endl;
-    cerr << cStartPoint->latitude->decimal () << endl;
+    cerr << cEndPoint->latitude.decimal () << endl;
+    cerr << cStartPoint->latitude.decimal () << endl;
     //cerr << cEndPoint->latitude->decimal () << endl;
     //cerr << cEndPoint->latitude->decimal () << endl;
-    dDirection = (sin (90. - deg2rad(cEndPoint->latitude->decimal ()))
-	    - (sin (deg2rad(cStartPoint->latitude->decimal ()))
+    dDirection = (sin (90. - deg2rad(cEndPoint->latitude.decimal ()))
+	    - (sin (deg2rad(cStartPoint->latitude.decimal ()))
 	    * cos (dSphericAngle)))
-	    / (cos (deg2rad(cEndPoint->latitude->decimal ()))
+	    / (cos (deg2rad(cEndPoint->latitude.decimal ()))
 	    * sin (dSphericAngle));
     cerr << "direction vor acos:  "<< dDirection << endl;
     dDirection = acos (dDirection);// * (360. / (2 * __PI));
     cerr << "direction nach acos: " << dDirection << endl;
-    if (cStartPoint->longitude->decimal () < cEndPoint->longitude->decimal ()) {    
+    if (cStartPoint->longitude.decimal () < cEndPoint->longitude.decimal ()) {    
 	dDirection = 360. - dDirection;
     }
     return (dDirection);
@@ -77,7 +77,7 @@ void Distance :: setStartPoint (const GeoCoordinate &cNewStartPoint)
     bDistanceValid = false;
 }
 
-void Distance :: setEndPoint (const Coordinate &cNewEndPoint)
+void Distance :: setEndPoint (const GeoCoordinate &cNewEndPoint)
 {
     delete cEndPoint;
     cEndPoint = new GeoCoordinate(cNewEndPoint);

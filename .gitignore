@@ -3,11 +3,11 @@ main*.elf
 main*.hex
 main*.lst
 main*.map
-main*.o
 main*.srec
 *.swp
 *a.out
 *~
+*.o
 
 ############
 # Binaries #
