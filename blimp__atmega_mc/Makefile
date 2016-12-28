@@ -9,7 +9,7 @@ MCU_TARGET     = atmega168
 OPTIMIZE       = -Os
 
 DEFS           =
-LIBS           = isr.o io/libuart.a timing.o
+LIBS           = isr.o io/ports.o io/libuart.a timing.o
 #debug.o uart_buffer.o 
 
 # You should not have to change anything below here.

@@ -43,7 +43,7 @@
 
 int main (void)
 {
-	
+	setPort (__PORT_C, 3, 1);
 	//struct stepper* blah = &caStepper[__STEPPER_SENSOR_HORIZONTAL];
 	//blah->uiSpeed = 2;
 
