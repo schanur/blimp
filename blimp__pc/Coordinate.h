@@ -14,6 +14,10 @@
 #include "CircleMath.cpp"
 #include "Vector.cpp"
 
+#define __ALTITUDE_DEFAULT 100.
+#define __ALTITUDE_MIN -100.
+#define __ALTITUDE_MAX 1000.
+
 using namespace std;
 
 
@@ -81,42 +85,33 @@ class Coordinate
 {
     protected: double dDecimal;
 	protected: bool bValid;
-	//protected: bool bValid;
-    //public: class Degrees
-    //public: class DegreesMinutesSeconds *dms;
     
     public: bool valid ();
     public: double decimal ();
     
-    //public: HalfCoordinate (const HalfCoordinate &cInitHalfCoordinate);
 	public: Coordinate ();    
 	public: Coordinate (double dInitDecimal);
-    //public: HalfCoordinate (uint16_t uiInitDegrees, uint16_t uiInitMinutes, double dInitSeconds);
-    //public: ~Coordinate ();
 };
 
 class Latitude : public Coordinate
 {
-    //public: Latitude (const Latitude &cInitLatitide);
 	public: Latitude ();
 	public: Latitude (double dInitDecimalLatitude);
-    //public: Latitude (uint16_t uiDegreesToSet, uint16_t uiMinutesToSet, double dSecondsToSet);
-    //public: ~Latitude ();
+
 };
 
 class Longitude : public Coordinate
 {
-    //public: Longitude (const Longitude &cInitLongitude);
-    	public: Longitude ();
+    public: Longitude ();
 	public: Longitude (double dInitDecimalLongitude);
-    //public: Longitude (uint16_t uiDegreesToSet, uint16_t uiMinutesToSet, double dSecondsToSet);
-    //public: ~Longitude ();
 };
 
 class Altitude
 {
 	private: bool bValid;
 	private: double dAltitude;
+
+		void initValues (double dInitAltitude);
 
 	public: bool valid ();
 	public: double decimal ();
@@ -135,12 +130,10 @@ class GeoCoordinate
 	public: bool valid ();
 
 	public: GeoCoordinate ();
-	//public: Coordinate (const Coordinate &cInitCoordinate);
     public: GeoCoordinate (const Latitude &cInitLatitude, const Longitude &cInitLongitude, const Altitude &cInitAltitude);
 
     //public: Coordinate (Latitude cInitLatitude, Longitude cInitLongitude, float fAltitude);
     //public: Coordinate (double dInitDecimalLatitude, double dInitDecimalLongitude, float fInitAltitude);
-    //public: ~Coordinate ();
 };
 
 #endif

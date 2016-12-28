@@ -76,19 +76,12 @@ DegreesMinutesSeconds :: ~DegreesMinutesSeconds ()
 
 //######################################################################
 
+bool Coordinate :: valid () { return (bValid); }
+
 double Coordinate :: decimal ()
 {
     return (dDecimal);
 }
-
-//HalfCoordinate :: HalfCoordinate (const HalfCoordinate &cInitHalfCoordinate)
-//{
-    /*dms = new DegreesMinutesSeconds (cInitHalfCoordinate.dms->degrees (), 
-	    cInitHalfCoordinate.dms->minutes (), 
-	    cInitHalfCoordinate.dms->seconds ());*/
-    //dDecimal = dms->toDecimal ();
-    //dDecimal = cInitHalfCoordinate.decimal ();
-//}
 
 Coordinate :: Coordinate ()
 {
@@ -102,22 +95,8 @@ Coordinate :: Coordinate (double dInitDecimal)
     //dms = new DegreesMinutesSeconds (dDecimal);
 }
 
-/*HalfCoordinate :: HalfCoordinate (uint16_t uiInitDegrees, uint16_t uiInitMinutes, double dInitSeconds)
-{
-    dms = new DegreesMinutesSeconds (uiInitDegrees, uiInitMinutes, dInitSeconds);
-    dDecimal = dms->toDecimal ();
-}*/
-
-//HalfCoordinate :: ~HalfCoordinate ()
-//{
-    //cerr << "  destructor: ~HalfCoordinate" << endl;
-    //delete dms;
-//}
-
 //######################################################################
 
-//Latitude :: Latitude (const Latitude &cInitLatitude)
-//    : HalfCoordinate (cInitLatitude) {};
 
 Latitude :: Latitude ()
 	: Coordinate ()
@@ -148,16 +127,8 @@ Latitude :: Latitude (double dInitDecimalLatitude)
     dDecimal = dInitDecimalLatitude;
 }
 
-/*Latitude :: Latitude (uint16_t uiInitDegrees, uint16_t uiInitMinutes, double dInitSeconds)
-    : HalfCoordinate (uiInitDegrees,uiInitMinutes,dInitSeconds) {};
-*/
-/*Latitude :: ~Latitude ()
-    : ~HalfCoordinate () {};
-*/
-//######################################################################
 
-//Longitude :: Longitude (const Longitude &cInitLongitude)
-//    : HalfCoordinate (cInitLongitude) {};
+//######################################################################
 
 Longitude :: Longitude ()
 	: Coordinate ()
@@ -188,13 +159,29 @@ Longitude :: Longitude (double dInitDecimalLongitude)
 	bValid = true;
     dDecimal = dInitDecimalLongitude;
 };
+//######################################################################
 
-/*Longitude :: Longitude (uint16_t uiInitDegrees, uint16_t uiInitMinutes, double dInitSeconds)
-    : HalfCoordinate (uiInitDegrees,uiInitMinutes,dInitSeconds) {};
-*/
-/*Longitude :: ~Longitude ()
-    : ~HalfCoordinate () {};
-*/
+Altitude :: Altitude () { initValues (__ALTITUDE_DEFAULT); }
+Altitude :: Altitude (double dInitAltitude) { initValues (dInitAltitude); }
+
+void Altitude :: initValues (double dInitAltitude)
+{
+	bValid = false;
+	dAltitude = dInitAltitude;
+	if (dAltitude < __ALTITUDE_MIN) {
+		throw string ("yellow submarine");
+	} else if (dAltitude > __ALTITUDE_MAX) {
+		throw string ("baehm");
+	} else {
+		bValid = true;
+	}
+}
+
+bool Altitude :: valid () { return bValid; }
+double Altitude :: decimal () { return dAltitude; }
+double Altitude :: feet () { throw string ("Altitude :: feed (): unsuported"); }
+
+//######################################################################
 
 bool GeoCoordinate :: valid ()
 {
@@ -206,14 +193,6 @@ bool GeoCoordinate :: valid ()
 	return (false);
 }
 
-//######################################################################
-
-/*GeoCoordinate :: GeoCoordinate (const GeoCoordinate &cInitGeoCoordinate)
-{
-    latitude = new Latitude (cInitCoordinate.latitude->decimal ());
-    longitude = new Longitude (cInitCoordinate.longitude->decimal ());
-}*/
-
 GeoCoordinate :: GeoCoordinate (const Latitude &cInitLatitude, const Longitude &cInitLongitude, const Altitude &cInitAltitude)
 {
     latitude = cInitLatitude;
@@ -221,19 +200,4 @@ GeoCoordinate :: GeoCoordinate (const Latitude &cInitLatitude, const Longitude &
     altitude = cInitAltitude;
 }
 
-/*Coordinate :: Coordinate (double dInitLatitude, double dInitLongitude, float fInitAltitude)
-{
-    latitude = new Latitude (dInitLatitude);
-    longitude = new Longitude (dInitLongitude);
-    fAltitude = fInitAltitude;
-}*/
-
-//GeoCoordinate :: ~GeoCoordinate ()
-//{
-    //cerr << "  destructor: ~Coordinate" <<endl;
-    //delete latitude;
-    //delete longitude;
-//}
-
-//######################################################################
 #endif

@@ -9,10 +9,10 @@
 
 void Distance :: calcSphericAngle ()
 {
-    double dCircStartLatitude = cStartPoint->latitude->decimal () * (2 * __PI) / 360;
-    double dCircStartLongitude = cStartPoint->longitude->decimal () * (2 * __PI) / 360;
-    double dCircEndLatitude = cEndPoint->latitude->decimal () * (2 * __PI) / 360;
-    double dCircEndLongitude = cEndPoint->longitude->decimal () * (2 * __PI) / 360;
+    double dCircStartLatitude = cStartPoint->latitude.decimal () * (2 * __PI) / 360;
+    double dCircStartLongitude = cStartPoint->longitude.decimal () * (2 * __PI) / 360;
+    double dCircEndLatitude = cEndPoint->latitude.decimal () * (2 * __PI) / 360;
+    double dCircEndLongitude = cEndPoint->longitude.decimal () * (2 * __PI) / 360;
 	
     dSphericAngle = (acos (
 	    (sin (dCircStartLatitude) * sin (dCircEndLatitude))

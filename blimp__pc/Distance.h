@@ -17,7 +17,7 @@ using namespace std;
 
 class Distance
 {
-    public: Coordinate *cStartPoint, *cEndPoint;
+    public: GeoCoordinate *cStartPoint, *cEndPoint;
     private: bool bStartCoordsValid, bEndCoordsValid;
     private: bool bDirectionValid, bDistanceValid;
     private: bool bSame;    
@@ -33,11 +33,11 @@ class Distance
 
     //public: bool reached ();
 
-    public: void setStartPoint (const Coordinate &cNewStartPoint);
-    public: void setEndPoint (const Coordinate &cNewEndPoint);
+    public: void setStartPoint (const GeoCoordinate &cNewStartPoint);
+    public: void setEndPoint (const GeoCoordinate &cNewEndPoint);
 
     public: Distance ();
-    public: Distance (const Coordinate &cInitStartPoint, const Coordinate &cInitEndPoint);
+    public: Distance (const GeoCoordinate &cInitStartPoint, const GeoCoordinate &cInitEndPoint);
     public: ~Distance ();
 };
 
