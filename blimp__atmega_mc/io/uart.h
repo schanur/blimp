@@ -8,7 +8,7 @@
 #include "../defines.h"
 
 #include "../makros.h"
-#include "uart_buffer.c"
+#include "uart_buffer.h"
 
 
 void initUart (struct uartBuffer *strBufferToInit);

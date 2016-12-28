@@ -16,7 +16,7 @@
 //#include "io/twimaster.c"
 //#include "isr.c"
 
-struct globalVars {
+//struct globalVars {
 	//uint8_t	uiOccuredErrorCode;
 
 	//uint8_t	uiCompassLowRes;
@@ -29,7 +29,7 @@ struct globalVars {
 	//struct stepper cEngine;
 	//struct stepper cPlatformVertical;
 	//struct stepper cPlatformHorizontal;	
-};
+//};
 
 //struct globalVars g;
 

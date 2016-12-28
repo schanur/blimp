@@ -1,13 +1,13 @@
 #ifndef __UART_BUFFER_H__
 #define __UART_BUFFER_H__
 
-#include "ring_buffer.c"
+#include "ring_buffer.h"
 
-typedef ringBuffer uartDirection;
+//typedef ringBuffer uartDirection;
 
 struct uartBuffer {
-	struct uartDirection receive;
-	struct uartDirection send;
+	struct ringBuffer receive;
+	struct ringBuffer send;
 };
 
 int8_t initUartBuffer (struct uartBuffer *strpUartBuffer, uint8_t uiReceiveBufferSize, uint8_t uiSendBufferSize);

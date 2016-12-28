@@ -1,18 +1,12 @@
 PRG            = main
 OBJ            = main.o
 
-#MCU_TARGET     = atmega168
-MCU_TARGET     = atmega88
-
 OPTIMIZE       = -Os
 
 DEFS           =
 LIBS           =
-#debug.o uart_buffer.o 
 
-# You should not have to change anything below here.
-
-CC             = avr-gcc
+CC             = g++
 
 # Override is only needed by avr-lib build system.
 
