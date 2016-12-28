@@ -12,14 +12,15 @@ void registerAllInterrupts()
 /// UART starten
 	UCSR0B |= (1 << RXCIE0);
 
-	uint8_t i;
-	for (i = 0; i < 4; i++) {
+	////uint8_t i;
+	/*for (i = 0; i < 4; i++) {
 		uiStepperWatch[i] = 0xff;
 	}
 	uiStepperWatch[__STEPPER_SENSOR_HORIZONTAL] = 0;
-	uiStepperWatch[__STEPPER_SENSOR_VERTICAL] = 1;
+	uiStepperWatch[__STEPPER_SENSOR_VERTICAL] = 1;*/
 }
 
+#ifdef __UART_H__
 ISR (USART_RX_vect)  //USART_RXC
 {
 	if (!(UCSR0A & (1 << RXC0))) {
@@ -50,13 +51,15 @@ ISR (USART_UDRE_vect)
 		UCSR0B &= ~(1 << UDRIE0);
 	}
 }
+#endif
+
 
 // Timer 2
 ISR (TIMER2_OVF_vect)
 {
 /// TODO wenn PC Code fertig reparieren
 	uint8_t i;
-	for (i = 0; i < 4; i++) {
+	/*for (i = 0; i < 4; i++) {
 		if (uiStepperWatch[i] != 0xff) {
 			if (uiStepperWatch[i] != 0) {
 				uiStepperWatch[i]--;
@@ -66,15 +69,16 @@ ISR (TIMER2_OVF_vect)
 			}
 			
 		}
-	}
+	}*/
 
-
+	#ifdef __UART_H__
 	protocol.uiUARTWatchdog++;
 	if (protocol.uiUARTWatchdog >= 50) {
 		//doStepperStep (&caStepper[__STEPPER_ENGINE]);
 		setPort (__PORT_B, 1, __SWITCH);
 		protocol.uiUARTWatchdog = 0;
 	}
+	#endif
 //	if (protocol.uiUARTWatchdog >= 50) {
 	//if (protocol.uiUARTWatchdog >= 2000) {
   		//PORTD = PORTD ^ 0xff;

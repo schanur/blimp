@@ -1,13 +1,15 @@
+# directory: blimp__atmega_mc/
+
 PRG            = main
 OBJ            = main.o
 
-#MCU_TARGET     = atmega168
-MCU_TARGET     = atmega88
+MCU_TARGET     = atmega168
+#MCU_TARGET     = atmega88
 
 OPTIMIZE       = -Os
 
 DEFS           =
-LIBS           =
+LIBS           = isr.o io/libuart.a timing.o
 #debug.o uart_buffer.o 
 
 # You should not have to change anything below here.
@@ -22,10 +24,17 @@ override LDFLAGS       = -Wl,-Map,$(PRG).map
 OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
-all: $(PRG).elf lst text eeprom
+all: libs $(PRG).elf lst text eeprom
+
+libs :
+	cd io; make
+	cd devices; make
+
+	$(CC) $(CFLAGS) -c timing.c
+	$(CC) $(CFLAGS) -c isr.c
 
 $(PRG).elf: $(OBJ)
-
+	
 	echo $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 
@@ -33,10 +42,10 @@ $(PRG).elf: $(OBJ)
 # demo.o: demo.c iocompat.h
 
 clean:
-	rm -rfv *.o *.gch $(PRG).elf *.eps *.png *.pdf *.bak 
-	rm -rfv *.lst *.map $(EXTRA_CLEAN_FILES)
-	rm -rfv ../shared_source/*.o ../shared_source/*.gch
-	rm -rfv io/*.o io/*.gch
+	cd io; make clean
+	cd devices; make clean
+	rm -fv *.o *.gch $(PRG).elf *.eps *.png *.pdf *.bak 
+	rm -fv *.lst *.map $(EXTRA_CLEAN_FILES)
 	
 lst:  $(PRG).lst
 

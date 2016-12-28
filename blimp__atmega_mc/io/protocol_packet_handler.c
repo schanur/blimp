@@ -2,7 +2,7 @@
 #define __PROTOCOL_PACKET_HANDLER_C__
 
 #include "protocol_packet_handler.h"
-#include "engine_speed.h"
+//#include "engine_speed.h"
 
 uint8_t uartProtocolHandleRemoteRequest ()
 {
@@ -72,14 +72,14 @@ uint8_t uartProtocolHandleRemoteRequest ()
 			printDebugMsg ("packet received: engine both");
 			struct packetSetEngineBoth cEngineBoth;
 			int16_t *ipNewEngineSpeed, iNewEngineSpeed;
-			ipNewEngineSpeed = (int16_t*) & &protocol.receive.commandData[__HEADER_SIZE];
+			ipNewEngineSpeed = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE];
 			iNewEngineSpeed = *ipNewEngineSpeed;
 			toPlatformByteOrder ((char*) &iNewEngineSpeed, 2);
-			iLeftEngine = iNewEngineSpeed;
-			ipNewEngineSpeed = (int16_t*) & &protocol.receive.commandData[__HEADER_SIZE + sizeof (int16_t)];
+			iEngineLeft = iNewEngineSpeed;
+			ipNewEngineSpeed = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE + sizeof (int16_t)];
 			iNewEngineSpeed = *ipNewEngineSpeed;
 			toPlatformByteOrder ((char*) &iNewEngineSpeed, 2);
-			iRightEngine = iNewEngineSpeed;
+			iEngineRight = iNewEngineSpeed;
 			uartProtocolSendResponse ((char*) &cEngineBoth, 2);
 			break;
 		}
@@ -88,12 +88,12 @@ uint8_t uartProtocolHandleRemoteRequest ()
 		/// Antriebsmotor.
 		case __UART_PROTOCOL_ENGINE_RIGHT: {
 			printDebugMsg ("packet received: engine right");
-			struct packetSetEngineRight cEngineRight;
+			//struct packetSetEngineRight cEngineRight;
 			int16_t *ipNewEngineSpeed, iNewEngineSpeed;
-			ipNewEngineSpeed = (int16_t*) & &protocol.receive.commandData[__HEADER_SIZE];
+			ipNewEngineSpeed = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE];
 			iNewEngineSpeed = *ipNewEngineSpeed;
 			toPlatformByteOrder ((char*) &iNewEngineSpeed, 2);
-			iRightEngine = iNewEngineSpeed;
+			iEngineRight = iNewEngineSpeed;
 			break;
 		}		
 		
@@ -101,12 +101,12 @@ uint8_t uartProtocolHandleRemoteRequest ()
 		/// Antriebsmotor.
 		case __UART_PROTOCOL_ENGINE_LEFT: {
 			printDebugMsg ("packet received: engine left");
-			struct packetSetEngineLeft cEngineLeft;
+			//struct packetSetEngineLeft cEngineLeft;
 			int16_t *ipNewEngineSpeed, iNewEngineSpeed;
-			ipNewEngineSpeed = (int16_t*) & &protocol.receive.commandData[__HEADER_SIZE];
+			ipNewEngineSpeed = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE];
 			iNewEngineSpeed = *ipNewEngineSpeed;
 			toPlatformByteOrder ((char*) &iNewEngineSpeed, 2);
-			iLeftEngine = iNewEngineSpeed;
+			iEngineLeft = iNewEngineSpeed;
 			break;
 		}
 
@@ -118,7 +118,7 @@ uint8_t uartProtocolHandleRemoteRequest ()
 			ipNewAngle = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE];
 			iNewAngle = *ipNewAngle;
 			toPlatformByteOrder ((char*) &iNewAngle, 2);
-			setStepperOffsetAngle (&caStepper[__STEPPER_ENGINE], iNewAngle);
+			//setStepperOffsetAngle (&caStepper[__STEPPER_ENGINE], iNewAngle);
 			uartProtocolSendResponse ((char*) &cStepperEngine, 2);
 			printDebugMsg ("packet received: stepper horizontal");
 			printDebugMsg ("value: ");
@@ -134,7 +134,7 @@ uint8_t uartProtocolHandleRemoteRequest ()
 			ipNewAngle = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE];
 			iNewAngle = *ipNewAngle;
 			toPlatformByteOrder ((char*) &iNewAngle, 2);
-			setStepperOffsetAngle (&caStepper[__STEPPER_SENSOR_VERTICAL], iNewAngle);
+			//setStepperOffsetAngle (&caStepper[__STEPPER_SENSOR_VERTICAL], iNewAngle);
 			uartProtocolSendResponse ((char*) &cStepperVertical, 2);
 			printDebugMsg ("packet received: stepper vertical");
 			printDebugMsg ("value: ");
@@ -150,7 +150,7 @@ uint8_t uartProtocolHandleRemoteRequest ()
 			ipNewAngle = (int16_t*) &protocol.receive.commandData[__HEADER_SIZE];
 			iNewAngle = *ipNewAngle;
 			toPlatformByteOrder ((char*) &iNewAngle, 2);
-			setStepperOffsetAngle (&caStepper[__STEPPER_SENSOR_HORIZONTAL], iNewAngle);
+			//setStepperOffsetAngle (&caStepper[__STEPPER_SENSOR_HORIZONTAL], iNewAngle);
 			//setStepperAbsoluteAngle (&caStepper[__STEPPER_SENSOR_HORIZONTAL], iNewAngle, __STEPPER_DIRECTION_LEFT);
 			uartProtocolSendResponse ((char*) &cStepperHorizontal, 2);
 			printDebugMsg ("packet received: stepper horizontal");

@@ -6,10 +6,10 @@
 #include <stdint.h>
 
 //#include "global_vars.h"
-#include "defines.h"
+#include "../defines.h"
 //#include "../shared_source/debug.c"
 
-#include "io/ports.h"
+#include "../io/ports.h"
 #include "stepper_matrix.h"
 
 #define __UNIPOLAR_FULLSTEP			0

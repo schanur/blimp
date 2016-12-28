@@ -1,6 +1,8 @@
 #ifndef __STEPPER_MATRIX_H__
 #define __STEPPER_MATRIX_H__
 
+#include <inttypes.h>
+
 /*struct stepper_matrix {
 	
 }*/

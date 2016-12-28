@@ -9,7 +9,7 @@
 //#include "global_vars.c"
 //#include "platform_specifics_atmega.h"
 //#include "io/ports.c"
-#include "io/uart_buffer.c"
+//#include "io/uart_buffer.c"
 //#include "../shared_source/uart_protocol_handler.c"
 
 //#include "io/ring_buffer.c"
@@ -21,8 +21,10 @@ uint8_t uiTimerDiv;
 
 void registerAllInterrupts();
 
+#ifdef __UART_H__
 ISR (USART_RX_vect);
 ISR (USART_UDRE_vect);
+#endif
 ISR (TIMER2_OVF_vect);
 
 ///FIXME: die anderen Funktionen auch anlegen

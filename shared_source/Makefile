@@ -1,7 +1,7 @@
 MCC=avr-gcc
 PCC=g++
 
-MCU_TARGET = atmega88
+MCU_TARGET = atmega168
 MC_OPTIMIZE = -Os
 PC_OPTIMIZE = -Os
 
@@ -44,4 +44,4 @@ clean__mc :
 clean__pc :
 	rm -fv *_pc.o
 
-clean : clean__mc clean__pc
+#clean : clean__mc clean__pc
