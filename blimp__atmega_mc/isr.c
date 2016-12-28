@@ -58,7 +58,7 @@ ISR (USART_UDRE_vect)
 ISR (TIMER2_OVF_vect)
 {
 /* TODO wenn PC Code fertig reparieren */
-	uint8_t i;
+	/*uint8_t i;*/
 	/*for (i = 0; i < 4; i++) {
 		if (uiStepperWatch[i] != 0xff) {
 			if (uiStepperWatch[i] != 0) {

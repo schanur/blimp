@@ -84,7 +84,7 @@ uint8_t stepperStatus (struct stepper* cStepper);
  * Die Haufigkeit, mit der die Routine pro Schrittmotor
  * aufgerufen wird, haengt von den Parametern uiSpeed
  * und uiAcceleration ab.
-
+ */
 void doStepperStep (struct stepper *cStepper);
 
 /*#################################################################################*/

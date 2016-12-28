@@ -7,7 +7,7 @@
 
 void printDebugIdent ()
 {
-	#if __PLATFORM_SPECIFICS_H__ == MC
+	#if __PLATFORM == 2
 	uartProtocolSendRequest (&strPCDataLink, "atme", 4, __UART_PROTOCOL_MESSAGE);
 	uartProtocolSendRequest (&strPCDataLink, "ga_m", 4, __UART_PROTOCOL_MESSAGE);
 	uartProtocolSendRequest (&strPCDataLink, "c: ", 3, __UART_PROTOCOL_MESSAGE);
@@ -18,11 +18,12 @@ void printDebugIdent ()
 
 void printDebugMsg (const char *ipDebugMsg)
 {
-	#if __PLATFORM_SPECIFICS_H__ == MC
+	#if __PLATFORM == 2
 	if (uiInDebugTransaction == 0) {
 		printDebugIdent ();
 	}
-	uint8_t i, uiPacketLength, uiMessageLength = 0;
+	uint8_t i, uiPacketLength, uiMessageLength;
+	uiMessageLength = 0;
 	/*return;*/
 	/* FIXME: 32 irgendwo anders her nehmen */
 	for (i = 0; i < 63; i++) {
@@ -57,7 +58,7 @@ void printDebugMsg (const char *ipDebugMsg)
 	#endif
 }
 
-#if __PLATFORM_SPECIFICS_H__ == MC
+#if __PLATFORM == 2
 void debugMsgTransactionStart ()
 {
 	__ENTER_CRITICAL_SECTION;
@@ -84,7 +85,7 @@ void debugMsgTransactionEnd ()
 void panic ()
 {
 	printDebugMsg ("\nPANIC!\n");
-	#if __PLATFORM_SPECIFICS_H__ == MC
+	#if __PLATFORM == 2
 	while (1);
 	#else
 	exit (1);

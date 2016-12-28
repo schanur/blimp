@@ -2,11 +2,14 @@ MCC=avr-gcc
 PCC=g++
 
 MCU_TARGET = atmega168
+
 MC_OPTIMIZE = -Os
 PC_OPTIMIZE = -Os
+MC_WARNINGS = -std=c99 -Wall -pedantic -Werror
+PC_WARNINGS = -std=c++98 -Wall -pedantic -Werror
 
-MC_CFLAGS = -g -Wall -pedantic -Werror $(MC_OPTIMIZE) -mmcu=$(MCU_TARGET)
-PC_CFLAGS = -Wall -pedantic -Werror $(PC_OPTIMIZE)
+MC_CFLAGS = -g $(MC_WARNINGS) $(MC_OPTIMIZE) -mmcu=$(MCU_TARGET)
+PC_CFLAGS = $(PC_WARNINGS) $(PC_OPTIMIZE)
 
 all : mc pc
 

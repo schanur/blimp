@@ -9,25 +9,25 @@
 	#ifndef __PLATFORM_SPECIFICS_BLIMP_PC_H__
 		#error no __PLATFORM_SPECIFICS_[$PLATFORM_NAME]_H__ included
 	#else
-		/// PC side UART function
+		/* PC side UART function */
 		struct SerialConnection
 		{
 			public: 
 				int8_t getChar (char *uiReceivedChar);
 				int8_t putChar (const char iCharToSend);
 		};
-		//int8_t SerialConnection :: getChar (char *uiReceivedChar);
-		//int8_t SerialConnection :: putChar (const char iCharToSend);
+		/*//int8_t SerialConnection :: getChar (char *uiReceivedChar);
+		//int8_t SerialConnection :: putChar (const char iCharToSend);*/
 		struct SerialConnection *ser;
 		#define UART_RECEIVE_NONBLOCK ser->getChar
 		#define UART_SEND_NONBLOCK ser->putChar
-		//#define UART_RECEIVE_NONBLOCK(x) uartGetChar(x)
-		//#define UART_SEND_NONBLOCK(x) uartPutChar(x)
+		/*//#define UART_RECEIVE_NONBLOCK(x) uartGetChar(x)
+		//#define UART_SEND_NONBLOCK(x) uartPutChar(x)*/
 	#endif
 #else
-	/// ATMEGA side UART function
+	/* ATMEGA side UART function */
 	struct uartBuffer;
-	// uartBuffer strUartProtocol
+	/*uartBuffer strUartProtocol*/
 	extern struct uartBuffer strPCLink;
 	int8_t uartGetChar(struct uartBuffer *strBufferToGet, char *uiReceivedChar);
 	int8_t uartPutChar(struct uartBuffer *strBufferToPut, char uiCharToSend);
@@ -43,15 +43,15 @@
 	#error protocol do not know how to send bytes. UART_SEND_NONBLOCK is not defined.
 #endif
 
-//#include "../defines.h"
-//#include "../blimp__atmega_mc/global_vars.c"
+/*//#include "../defines.h"
+//#include "../blimp__atmega_mc/global_vars.c"*/
 
 #include <inttypes.h>
 
 #include "protocolNumbers.h"
 #include "protocolPackets.h"
 
-//#include "debug.h"
+/*#include "debug.h"*/
 
 /* 
  * Protokollbeschreibung:

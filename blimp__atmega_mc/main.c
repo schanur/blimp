@@ -6,19 +6,11 @@
 #include "platform_specifics_atmega.h"
 
 
-
-
-/* TODO: includes korrigieren... in allen dateien */
 #include "defines.h"
-//#include "global_vars.c"
 
 /* Hardware Interfaces */
 #include "io/ports.h"
-/*#include "io.c"*/
-
 #include "io/uart.h"
-/*//#include "io/uart_buffer.c"
-//#include "io/twimaster.c"*/
 #include "io/i2c.h"
 
 /*struct uartBuffer strUARTLink;*/
@@ -28,7 +20,6 @@
 
 /* Software Protokolle */
 #include "devices/stepper_motor.h"
-/*//uint8_t uiStepperWatch[4];*/
 
 #include "../shared_source/uart_protocol_handler.h"
 #include "io/protocol_packet_handler.h"
@@ -41,7 +32,7 @@
 #include "../shared_source/debug.h"
 
 uint8_t uiGlobalError;
-struct stepper caStepper[4];
+struct uartBuffer strPCLink;
 
 int main (void)
 {
@@ -51,7 +42,7 @@ int main (void)
 
 	wait_ms(300);
 	/*//initGlobalVars ();*/
-	struct uartBuffer strPCLink;
+	
 	initUartBuffer (&strPCLink, 64, 64);
 	initUart (&strPCLink);
 	
@@ -73,7 +64,7 @@ int main (void)
 	while (uartPutString (&strPCLink, "done\ninit protocol handler... ") == __ERROR) {wait_ms(1);}
 	wait_ms(1000);
 	
-	uartProtocolInitProtocolHandler (&strPCLink, __UART_SEQENCE_NO_BEGIN, __UART_SEQENCE_NO_END);
+	/*uartProtocolInitProtocolHandler (&strPCLink, __UART_SEQENCE_NO_BEGIN, __UART_SEQENCE_NO_END);*/
 	while (uartPutString (&strPCLink, "done\ninit steppers...\t\t") == __ERROR) {}
 	wait_ms(1000);
 	/*//initStepper (&caStepper[__STEPPER_SENSOR_HORIZONTAL], __STEPPER_SENSOR_HORIZONTAL, __UNIPOLAR_FULLSTEP);

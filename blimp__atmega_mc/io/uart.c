@@ -24,7 +24,7 @@ void initUart(struct uartBuffer *strBufferToInit)
 	}
 	while (UCSR0A & (1 << RXC0));
 
-	/ Einschalten der Interrupts */
+	/* Einschalten der Interrupts */
 	/*UCSR0B |= (1 << RXCIE0);
 	UCSR0B |= (1 << TXCIE0);*/
 	return;

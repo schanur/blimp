@@ -32,6 +32,7 @@
 		const uint8_t uiPayloadLength,
 		const uint8_t uiPacketTypeNo);*/
 
+void printDebugIdent ();
 void printDebugMsg (const char *ipDebugMsg);
 
 #if __PLATFORM == 2
