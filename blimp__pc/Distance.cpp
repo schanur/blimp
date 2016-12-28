@@ -15,59 +15,38 @@ void Distance :: calcSphericAngle ()
     double dCircEndLongitude = cEndPoint->longitude.decimal () * (2 * __PI) / 360;
 	
     dSphericAngle = (acos (
-	    (sin (dCircStartLatitude) * sin (dCircEndLatitude))
-	    + (cos (dCircStartLatitude) * cos (dCircEndLatitude)
-	    * cos (dCircEndLongitude - dCircStartLongitude))))
+	    (sin (dCircStartLatitude) 
+				* sin (dCircEndLatitude))
+	    + (cos (dCircStartLatitude) 
+				* cos (dCircEndLatitude)
+	    		* cos (dCircEndLongitude - dCircStartLongitude))))
 	    * (360. / (2. * __PI));
     cerr << "sphericAngle: " << dSphericAngle << endl;
 }
 
 double Distance :: direction ()
 {
+	cerr << "double Distance :: direction (void): start" << endl;
     if (bDirectionValid) { return (dDirection); }
     if (!bStartCoordsValid | !bEndCoordsValid) { throw GeneralException (); }	
     if (!bDistanceValid) {
 		calcSphericAngle ();
     }
     bDirectionValid = true;
-    /*dDirection = acos ((sin (cEndPoint->latitude->decimal ())
-	    - (sin (cStartPoint->latitude->decimal ())
-	    * cos (dSphericAngle)))
-	    / (cos (cEndPoint->latitude->decimal ())
-	    * (sin (dSphericAngle))))
-	    * (360. / (2. * __PI));*/
-    
-    cerr << "direction ()" << endl;
-    cerr << cEndPoint->latitude.decimal () << endl;
-    cerr << cStartPoint->latitude.decimal () << endl;
-    //cerr << cEndPoint->latitude->decimal () << endl;
-    //cerr << cEndPoint->latitude->decimal () << endl;
-    dDirection = rad2deg (acos (
-			sin (deg2rad(cStartPoint->latitude.decimal ()))
-			* sin (deg2rad(cEndPoint->latitude.decimal ()))
-			+ cos (deg2rad(cStartPoint->latitude.decimal ()))
-			* cos (deg2rad(cEndPoint->latitude.decimal ()))
-			* cos (deg2rad(cEndPoint->longitude.decimal ())
-					- deg2rad(cStartPoint->longitude.decimal ()))));
+	double tx, ty, earth_radius = 6383254.445;
+	tx = (2 * earth_radius * __PI / 360) * cos (deg2rad (cStartPoint->latitude.decimal ()))
+			* (cEndPoint->longitude.decimal () - cStartPoint->longitude.decimal ());
+	ty = (2 * earth_radius * __PI / 360)
+			* (cEndPoint->latitude.decimal () - cStartPoint->latitude.decimal ());
+	dDirection = atan (tx / ty);
+	if (ty < 0)
+				dDirection += __PI;
+			if (dDirection >= (2 * __PI))
+				dDirection -= 2 * __PI;
+			if (dDirection < 0)
+				dDirection += 2 * __PI;
 
-	/*dDirection = (sin (deg2rad(cEndPoint->latitude.decimal ()))
-	    - (sin (deg2rad(cStartPoint->latitude.decimal ()))
-	    * cos (dSphericAngle)))
-	    / (cos (deg2rad(cStartPoint->latitude.decimal ()))
-	    * sin (dSphericAngle));*/
-
-	/*dDirection = (sin (cEndPoint->latitude.decimal ())
-	    - (sin (cStartPoint->latitude.decimal ())
-	    * cos (dSphericAngle)))
-	    / (cos (cStartPoint->latitude.decimal ())
-	    * sin (dSphericAngle));*/
-    //cerr << "direction vor acos:  "<< dDirection << endl;
-    //dDirection = acos (dDirection) * (360. / (2 * __PI));
-    //cerr << "direction nach acos: " << dDirection << endl;
-     if (cStartPoint->longitude.decimal () > cEndPoint->longitude.decimal ()) {    
-		dDirection = 360. - dDirection;
-    }
-    return (dDirection);
+    return (rad2deg (dDirection));
 
 	//*****************************
      /*       kurswinkel = (System.Math.Sin(x_dezgrad_zweite) - System.Math.Sin(x_dezgrad_erste) * System.Math.Cos(winkel)) / (System.Math.Cos(x_dezgrad_erste) * System.Math.Sin(winkel));
