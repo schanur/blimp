@@ -1,12 +1,12 @@
 #ifndef __PRINT_DTYPES_H__
 #define __PRINT_DTYPES_H__
 
-//#ifndef _cplusplus
+/*//#ifndef _cplusplus
 //#include "../blimp__atmega_mc/io/uart.c"
 //#include <stdlib.h>
 //#else
 //#include <stdlib.h>
-//#endif
+//#endif*/
 
 #include "platform_specifics_macros.h"
 

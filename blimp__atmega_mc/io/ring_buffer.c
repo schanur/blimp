@@ -59,7 +59,7 @@ int8_t readFromBuffer (struct ringBuffer *strpRingBuffer, char* cpReadChar)
 {
 	__ENTER_CRITICAL_SECTION;
 	if (charsInBuffer (strpRingBuffer) == 0) {
-		/// Fehler: kein weiteres Zeichen im Buffer
+		/* Fehler: kein weiteres Zeichen im Buffer */
 		__LEAVE_CRITICAL_SECTION;
 		return (__ERROR);
 	}
@@ -73,7 +73,7 @@ int8_t writeToBuffer (struct ringBuffer *strpRingBuffer, const char cWriteChar)
 {
 	__ENTER_CRITICAL_SECTION;
 	if (freeBufferSize (strpRingBuffer) == 0) {
-		/// Fehler: Der Empfangsbuffer ist übergelaufen.
+		/* Fehler: Der Empfangsbuffer ist übergelaufen. */
 		__LEAVE_CRITICAL_SECTION;
 		return (__ERROR);
 	}

@@ -1,7 +1,7 @@
 #ifndef __GLOBAL_VARS_H__
 #define __GLOBAL_VARS_H__
 
-
+#error global vars
 #include "defines.h"
 #include <stdint.h>
 //#include "io.c"

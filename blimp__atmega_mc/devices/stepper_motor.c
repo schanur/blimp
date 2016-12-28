@@ -9,7 +9,7 @@ void initStepper (struct stepper* cStepperToInit, const uint8_t uiStepperNo, con
 	cStepperToInit->uiStepType = uiStepType;
 
 	cStepperToInit->iStepCount = 0;
-	//cStepperToInit->iTargetAngle;
+	/*cStepperToInit->iTargetAngle;*/
 	cStepperToInit->iStepsLeft = 0;
 	switch (cStepperToInit->uiStepperNo)  {
 		case __STEPPER_ENGINE : {
@@ -26,11 +26,11 @@ void initStepper (struct stepper* cStepperToInit, const uint8_t uiStepperNo, con
 		}
 	}
 	
-	/// FIXME: Das geht schief (letzten Wert auf eprom schreiben oder justieren)
-	//caStepper[uiStepperNo].uiSpeed = 5;
+	/* FIXME: Das geht schief (letzten Wert auf eprom schreiben oder justieren) */
+	/*//caStepper[uiStepperNo].uiSpeed = 5;
 
 	//uiStepperWatch[uiStepperNo] = 0;
-	//uiStepperWatch[uiStepperNo] = 10;
+	//uiStepperWatch[uiStepperNo] = 10;*/
 }
 
 void setStepperAbsolutePos (struct stepper* cStepperToSet, int16_t iAngle)
@@ -46,7 +46,7 @@ void setStepperOffsetPos (struct stepper* cStepperToSet, int16_t iAngle)
 void setStepperAbsoluteAngle (struct stepper* cStepperToSet, int16_t iAngle, const uint8_t uiDirection)
 {
 	if (stepperStatus (cStepperToSet) != __COMPLETE) {
-		//printDebugMsg("\nsetStepperAngle (): wasnt ready\n");
+		/*printDebugMsg("\nsetStepperAngle (): wasnt ready\n");*/
 	} else if (((int16_t) ((int32_t) cStepperToSet->iStepCount * 360 / cStepperToSet->iStepsPerReducedCycle)) != iAngle) {
 		iAngle = iAngle - (int16_t) ((int32_t) (cStepperToSet->iStepCount * 360 / cStepperToSet->iStepsPerReducedCycle));
 		if (iAngle < 0) {
@@ -62,11 +62,11 @@ void setStepperAbsoluteAngle (struct stepper* cStepperToSet, int16_t iAngle, con
 void setStepperOffsetAngle (struct stepper* cStepperToSet, int16_t iAngle)
 {
 	if (stepperStatus (cStepperToSet) != __COMPLETE) {
-		//printDebugMsg("\nsetStepperAngle (): wasnt ready\n");
+		/*printDebugMsg("\nsetStepperAngle (): wasnt ready\n");*/
 	} else {
 		cStepperToSet->iStepsLeft = calculateSteps (cStepperToSet, iAngle);
 
-	//	cStepperToSet->iTargetAngle = 
+		/*cStepperToSet->iTargetAngle = */
 	}
 }
 
@@ -101,8 +101,8 @@ void doStepperStep (struct stepper *cStepper)
 		}
 		cStepper->iStepsLeft++;
 	} else {
-		//printDebugMsg("\ndoStepperStep (): undefined path\n");
-		//panic ();
+		/*//printDebugMsg("\ndoStepperStep (): undefined path\n");
+		//panic ();*/
 	}
 	changeStepperPhase (cStepper);
 }
@@ -110,11 +110,11 @@ void doStepperStep (struct stepper *cStepper)
 
 int16_t calculateSteps (struct stepper* cStepper, const int16_t iAngle)
 {
-	int16_t iStepsLeft;// iCalc;
+	int16_t iStepsLeft; /* iCalc; */
 
-	// Errechnen der zu drehenden Steps
+	/* Errechnen der zu drehenden Steps */
 	iStepsLeft = (int16_t) (((int32_t) cStepper->iStepsPerReducedCycle * iAngle) / 360);
-	//iStepsLeft /= 360;
+	/*iStepsLeft /= 360;*/
 	return (iStepsLeft);
 }
 
@@ -189,13 +189,13 @@ void setStepperAddressPin (struct stepper* cStepper, const uint8_t uiPinNo, cons
 			break;
 		}
 		case (__STEPPER_ENGINE): {
-			//printDebugMsg("\nsetStepperAddressPin (): wrong stepper");
-			//panic ();
+			/*//printDebugMsg("\nsetStepperAddressPin (): wrong stepper");
+			//panic ();*/
 			break;
 		}
 		default: {
-			//printDebugMsg("\nsetStepperAddressPin (): unknown stepper");
-			//panic ();
+			/*//printDebugMsg("\nsetStepperAddressPin (): unknown stepper");
+			//panic ();*/
 			break;
 		}
 	}

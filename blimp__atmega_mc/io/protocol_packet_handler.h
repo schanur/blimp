@@ -14,10 +14,10 @@
 extern int16_t iEngineRight;
 extern int16_t iEngineLeft;
 
-uint8_t uartProtocolHandleRemoteRequest ();
-uint8_t uartProtocolHandlePacket ();
+uint8_t uartProtocolHandleRemoteRequest (struct strUartProtocol *strpProtocolLink);
+uint8_t uartProtocolHandlePacket (struct strUartProtocol *strpProtocolLink);
 
-//struct stepper;
-//void setStepperOffsetAngle (struct stepper* cStepperToSet, const int16_t iAngle);
+/*struct stepper;
+void setStepperOffsetAngle (struct stepper* cStepperToSet, const int16_t iAngle);*/
 
 #endif

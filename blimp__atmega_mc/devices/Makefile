@@ -5,7 +5,7 @@ MCC=avr-gcc
 MCU_TARGET = atmega168
 MC_OPTIMIZE = -Os
 
-MC_CFLAGS = -g -Wall $(MC_OPTIMIZE) -mmcu=$(MCU_TARGET)
+MC_CFLAGS = -g -Wall -Werror $(MC_OPTIMIZE) -mmcu=$(MCU_TARGET)
 
 all : stepper_motor stepper_matrix
 

@@ -37,21 +37,22 @@ void uartProtocolIncSequenceNo (struct strUartProtocol *strpProtocolLink,
 
 uint8_t uartProtocolNewCommandReceived (struct strUartProtocol *strpProtocolLink)
 {
-	/// TODO
-	/// und ebendfalls Timeout falls der PC z.B. nach
-	/// N-1 Zeichen mit dem Senden aufhoert.
+	/* TODO
+	 * und ebendfalls Timeout falls der PC z.B. nach
+	 * N-1 Zeichen mit dem Senden aufhoert.
+	 */
 
 	char uiCharFromBuffer;
 	if (UART_RECEIVE_NONBLOCK(&uiCharFromBuffer) == __ERROR) {
-	//if (uartGetChar(&uiCharFromBuffer) == __ERROR) {
+	/*if (uartGetChar(&uiCharFromBuffer) == __ERROR) {*/
 		return (0);
-	} //else {
+	} /*//else {
 		//cerr << uiCharFromBuffer;
 	//}
-	//FIXME
+	//FIXME*/
 	strpProtocolLink->receive.commandData[strpProtocolLink->receive.dataPos] = uiCharFromBuffer;
 	
-	/// Prüfung ob die Gegenstelle ein Reset-Zeichen sendet
+	/* Prüfung ob die Gegenstelle ein Reset-Zeichen sendet */
 	if (strpProtocolLink->receive.commandData[strpProtocolLink->receive.dataPos] == __UART_PROTOCOL_RESET_STATE_1_CHAR) {
 		if (++strpProtocolLink->uiReceiveResetCharCount >= __UART_PROTOCOL_RESET_STATE_1_LENGTH) {
 			return (4);
@@ -61,12 +62,12 @@ uint8_t uartProtocolNewCommandReceived (struct strUartProtocol *strpProtocolLink
 	}
 	
 	if (strpProtocolLink->receive.dataPos > 2) {
-		/// TODO: 7 gegen define ersetzen
+		/* TODO: 7 gegen define ersetzen */
 		if (strpProtocolLink->receive.commandData[2] > 7) {
 			return (2);
 		}
 		if (strpProtocolLink->receive.dataPos == strpProtocolLink->receive.commandData[2]) {
-			/// Paket wurde komplett empfangen
+			/* Paket wurde komplett empfangen */
 			return (1);
 		}
 	}
@@ -109,11 +110,12 @@ uint8_t uartProtocolSendMessage (struct strUartProtocol *strpProtocolLink,
 	//while (UART_SEND_NONBLOCK ('=') == __ERROR) {}
 	char uiXORedValue = 0x00;
 	uint8_t i;
-	/// TODO:
-	/// Header struct verwenden
-	
+	/* TODO:
+	 * Header struct verwenden
+	 */
+
 	if (uiPayloadLength > __MAX_PAYLOAD_SIZE) {
-		/// FIXME:
+		/* FIXME: */
 		//while (uartPutString ("payload too long (send).") == __ERROR) {}
 		return (__ERROR);
 	}
@@ -121,12 +123,12 @@ uint8_t uartProtocolSendMessage (struct strUartProtocol *strpProtocolLink,
 	strpProtocolLink->send.commandData[__PACKET_TYPE_POS] = uiPacketTypeNo;
 	strpProtocolLink->send.commandData[__SEQUENCE_NO_POS] = uiSeqenceNo;
 	strpProtocolLink->send.commandData[__PACKET_LENGTH_POS] = uiPayloadLength + __HEADER_SIZE;
-	//cerr << "Sequenznummer : " << (int)uiSeqenceNo << endl;
+	/*cerr << "Sequenznummer : " << (int)uiSeqenceNo << endl;*/
 	for (i = 0; i < uiPayloadLength; i++) {
 		strpProtocolLink->send.commandData[i + __HEADER_SIZE] = *(uipResponse + i);
 	}
 	
-	/// Berechnung der Pruefsumme des Pakets
+	/* Berechnung der Pruefsumme des Pakets */
 	for (i = 0; i < uiPayloadLength + __HEADER_SIZE; i++) {
 		uiXORedValue ^= strpProtocolLink->send.commandData[i];
 	}
@@ -185,9 +187,10 @@ void uartProtocolUndoResetProgress (struct strUartProtocol *strpProtocolLink)
 }
 
 uint8_t uartProtocolConnectionReset (struct strUartProtocol *strpProtocolLink) {
-	/// TODO: EinFehlerfall falls der PC beispielsweise
-	/// aufhoert Resets zu senden. Also Timeout etc..
-	/// Code komentieren	
+	/* TODO: EinFehlerfall falls der PC beispielsweise
+	 * aufhoert Resets zu senden. Also Timeout etc..
+	 * Code komentieren	
+	 */
 
 	char cReceivedChar;
 	if (UART_RECEIVE_NONBLOCK (&cReceivedChar) == __SUCCESS) {
@@ -240,34 +243,35 @@ uint8_t uartProtocolDoHandlerStep (struct strUartProtocol *strpProtocolLink)
 		case __PROTOCOL_STATE_COMMAND_INCOMLETE: {
 			//while (uartPutString ("protocol state: incomplete\n") == __ERROR) {}
 			switch (uartProtocolNewCommandReceived (strpProtocolLink)) {
-			/// TODO: hart kodierte Zahlen durch defines ersetzen
-			/// und die faelle alle noch etwas besser abhandeln
-			
+			/* TODO: hart kodierte Zahlen durch defines ersetzen
+			 * und die faelle alle noch etwas besser abhandeln
+			 */
+
 				case 0: {
-					///es wurde kein Paket komplettiert
+					/* es wurde kein Paket komplettiert */
 					//while (uartPutString ("case: 0 \n") == __ERROR) {}
 					break;
 				}
 				case 1: {
-					/// Paket wurde komplett empfangen
+					/* Paket wurde komplett empfangen */
 					//while (uartPutString ("case: aok \n") == __ERROR) {}
 					strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_COMMAND_COMPLETE;
 					break;
 				}
 				case 2: {
-					/// laengen Fehler
+					/* laengen Fehler */
 					//while (uartPutString ("case: laengenfehler \n") == __ERROR) {}
 					strpProtocolLink->uiConnectionState =  __PROTOCOL_STATE_CONNECTION_RESET;
 					break;
 				}
 				case 3: {
-					/// Timeout
+					/* Timeout */
 					//FIXME:
 					//panic ();
 					break;
 				}
 				case 4: {
-					/// PC hat RESET gesendet
+					/* PC hat RESET gesendet */
 					strpProtocolLink->uiConnectionState =  __PROTOCOL_STATE_CONNECTION_RESET;
 					break;
 				}
@@ -276,12 +280,12 @@ uint8_t uartProtocolDoHandlerStep (struct strUartProtocol *strpProtocolLink)
 					//panic ();
 				}
 			}
-			/// TODO: Fehler zurueckgeben bei einem Timeout
+			/* TODO: Fehler zurueckgeben bei einem Timeout */
 			break;
 		}
 
 		case __PROTOCOL_STATE_COMMAND_COMPLETE: {
-			//while (uartPutString ("protocol state: complete\n") == __ERROR) {}
+			/*while (uartPutString ("protocol state: complete\n") == __ERROR) {}*/
 			if (uartProtocolNewCommandValid (strpProtocolLink) == 1) {
 				strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_COMMAND_VALID;
 			} else {
@@ -291,55 +295,57 @@ uint8_t uartProtocolDoHandlerStep (struct strUartProtocol *strpProtocolLink)
 		}
 
 		case __PROTOCOL_STATE_COMMAND_INVALID: {
-			//while (uartPutString ("protocol state: invalid\n") == __ERROR) {}
-			/// TODO: Momentan wird nur nach BIT-Fehlern gesucht.
-			/// Später noch den Fall der Logik-Fehler betrachten.
-			//while (uartPutString ("\ncommand invalid.\n") == __ERROR) {}
+			/*while (uartPutString ("protocol state: invalid\n") == __ERROR) {}*/
+			/* TODO: Momentan wird nur nach BIT-Fehlern gesucht.
+			 * Später noch den Fall der Logik-Fehler betrachten.
+			 */
+			/*while (uartPutString ("\ncommand invalid.\n") == __ERROR) {}*/
 			strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_CONNECTION_RESET;
 			break;
 		}
 
 		case __PROTOCOL_STATE_COMMAND_VALID: {
-			//while (uartPutString ("protocol state: valid\n") == __ERROR) {}
+			/*//while (uartPutString ("protocol state: valid\n") == __ERROR) {}
 			//if (1) {
-			//if (uartProtocolHandlePacket () == __SUCCESS) {
-				/// Gehe wieder an den Anfang
-				/// und warte auf ein neues
-				/// Kommando.
+			//if (uartProtocolHandlePacket () == __SUCCESS) {*/
+				/* Gehe wieder an den Anfang
+				 * und warte auf ein neues
+				 * Kommando.
+				 */
 			uartProtocolClearIncomingCommandBuffer (strpProtocolLink);
 			strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_COMMAND_INCOMLETE;
-			//} else {
+			/*//} else {
 				/// Die Anfrage vom PC macht keinen Sinn.
 			//	protocol.uiConnectionState = __PROTOCOL_STATE_CONNECTION_RESET;
-			//}
+			//}*/
 			break;
 		}
 
 		case __PROTOCOL_STATE_CONNECTION_RESET: {
-			//while (uartPutString ("protocol state: reset\n") == __ERROR) {}
-			/// TODO: Hier fehlt auch noch was...
+			/*//while (uartPutString ("protocol state: reset\n") == __ERROR) {}*/
+			/* TODO: Hier fehlt auch noch was... */
 			if (uartProtocolConnectionReset (strpProtocolLink) == __COMPLETE) {
-				//while (uartPutString ("reset sequence complete.\n") == __ERROR) {}				
+				/*//while (uartPutString ("reset sequence complete.\n") == __ERROR) {} */	
 				strpProtocolLink->uiConnectionState = __PROTOCOL_STATE_COMMAND_INCOMLETE;
 				uartProtocolUndoResetProgress (strpProtocolLink);
 				uartProtocolClearIncomingCommandBuffer (strpProtocolLink);
-				//while (uartPutString ("\nreset complete.\n") == __ERROR) {}
-				//#ifdef __cplusplus
+				/*//while (uartPutString ("\nreset complete.\n") == __ERROR) {}
+				//#ifdef __cplusplus*/
 				strpProtocolLink->uiSequenceNoReceivePos = strpProtocolLink->uiSequenceNoBegin;
 				strpProtocolLink->uiSequenceNoSendPos = strpProtocolLink->uiSequenceNoBegin;
-				//#ifdef __DEBUG__
+				/*//#ifdef __DEBUG__
 				//printDebugMsg ("Reset complete.\n");
 				//#endif
-				//#endif
+				//#endif*/
 			}
 			break;
 		}
 
 		default: {
-			//while (uartPutString ("protocol state: moeoeepp!!??\n") == __ERROR) {}
+			/*//while (uartPutString ("protocol state: moeoeepp!!??\n") == __ERROR) {}
 			/// moeoeepp???	
 			//FIXME
-			//panic ();
+			//panic ();*/
 			break;
 		}
 	}

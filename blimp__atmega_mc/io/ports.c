@@ -30,11 +30,11 @@ void set_port_direction (uint8_t port_no, uint8_t bit_pos, uint8_t io_value)
 		} else if (port_no == __PORT_D) {
 			DDRD &= bitmask;
 		} else {
-			//panic ();
+			/*panic ();*/
 		}
 	} else if (io_value == __OUTPUT)
 	{
-		//uint8_t bitmask = 1 << (7 - bit_pos);
+		/*uint8_t bitmask = 1 << (7 - bit_pos);*/
 		if (port_no == __PORT_B) {
 			DDRB |= (1 << PB2);
 		} else if (port_no == __PORT_C) {
@@ -42,24 +42,24 @@ void set_port_direction (uint8_t port_no, uint8_t bit_pos, uint8_t io_value)
 		} else if (port_no == __PORT_D) {
 			DDRD |=  (1 << PD3);
 		} else {
-			//panic ();
+			/*panic ();*/
 		}
 	} else 
 	{
-		//panic ();
+		/*panic ();*/
 	}
 }
 
 void port_init ()
 {
-//	DDRB |=  (1 << PB0 | 1 << PB1 | 1 << PB2 | 1 << PB3 | 1 << PB4 | 1 << PB5 );
+/*//	DDRB |=  (1 << PB0 | 1 << PB1 | 1 << PB2 | 1 << PB3 | 1 << PB4 | 1 << PB5 );
 //	DDRC |=  (1 << PC0 | 1 << PC1 | 1 << PC2 | 1 << PC3);
-//	DDRD |=  (1 << PD3 | 1 << PD2 | 1 << PD4 | 1 << PD5 | 1 << PD6 | 1 << PD7 );
+//	DDRD |=  (1 << PD3 | 1 << PD2 | 1 << PD4 | 1 << PD5 | 1 << PD6 | 1 << PD7 );*/
 
 	DDRB |=  (1 << PB0 | 1 << PB1 | 1 << PB3 | 1 << PB5 );
 	DDRC |=  (1 << PC0 | 1 << PC1 | 1 << PC2 | 1 << PC3);
 	DDRD |=  (1 << PD3 | 1 << PD2 | 1 << PD6 | 1 << PD7 );
-	// TEST LED 
+/*	// TEST LED 
 //	set_port_direction (__PORT_D__, 2, __OUTPUT__);
 //	port_direction (__PORT_D__, (1 << 5));
 	//Ports für Motoren
@@ -72,7 +72,7 @@ void port_init ()
 //	set_port_direction (__PORT_B__, 5, __OUTPUT__); // will nicht
 
 //	set_port_direction (__PORT_C__, 3, __OUTPUT__);
-//	set_port_direction (__PORT_C__, 2, __OUTPUT__);
+//	set_port_direction (__PORT_C__, 2, __OUTPUT__);*/
 
 	
 }
@@ -116,7 +116,7 @@ void setPort (uint8_t port_no, uint8_t bit_pos, uint8_t io_value)
 					break;
 				}
 				default: {
-					//panic ();
+					/*panic ();*/
 					break;
 				}
 			}
@@ -137,7 +137,7 @@ void setPort (uint8_t port_no, uint8_t bit_pos, uint8_t io_value)
 					break;
 				}
 				default: {
-					//panic ();
+					/*panic ();*/
 					break;
 				}
 			}
@@ -158,14 +158,14 @@ void setPort (uint8_t port_no, uint8_t bit_pos, uint8_t io_value)
 					break;
 				}
 				default: {
-					//panic ();
+					/*panic ();*/
 					break;
 				}
 			}
 			break;
 		}
 		default: {
-			//panic ();
+			/*panic ();*/
 		}
 	}
 }

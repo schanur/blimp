@@ -1,9 +1,9 @@
 #ifndef __UART_H__
 #define __UART_H__
 
-//#include <stdlib.h>
+/*//#include <stdlib.h>
 //#include <avr/io.h>
-//#include <stdint.h>
+//#include <stdint.h>*/
 
 #include "../defines.h"
 

@@ -6,14 +6,14 @@
 #include "defines.h"
 #include <stdint.h>
 
-//#include "global_vars.c"
+/*//#include "global_vars.c"
 //#include "platform_specifics_atmega.h"
 //#include "io/ports.c"
 //#include "io/uart_buffer.c"
 //#include "../shared_source/uart_protocol_handler.c"
 
 //#include "io/ring_buffer.c"
-//#include "io/print_dtype.c"
+//#include "io/print_dtype.c"*/
 
 #define __ISR_USE_UART
 #define __ISR_USE_STEPPER
@@ -28,7 +28,7 @@
 
 extern uint8_t uiGlobalError;
 
-//uint8_t uiTimerDiv;
+/*uint8_t uiTimerDiv;*/
 
 void registerAllInterrupts();
 
@@ -39,6 +39,6 @@ ISR (USART_UDRE_vect);
 
 ISR (TIMER2_OVF_vect);
 
-///FIXME: die anderen Funktionen auch anlegen
+/* FIXME: die anderen Funktionen auch anlegen */
 
 #endif

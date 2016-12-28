@@ -5,8 +5,8 @@ MCU_TARGET = atmega168
 MC_OPTIMIZE = -Os
 PC_OPTIMIZE = -Os
 
-MC_CFLAGS = -g -Wall $(MC_OPTIMIZE) -mmcu=$(MCU_TARGET)
-PC_CFLAGS = -Wall $(PC_OPTIMIZE)
+MC_CFLAGS = -g -Wall -pedantic -Werror $(MC_OPTIMIZE) -mmcu=$(MCU_TARGET)
+PC_CFLAGS = -Wall -pedantic -Werror $(PC_OPTIMIZE)
 
 all : mc pc
 

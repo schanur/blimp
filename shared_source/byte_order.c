@@ -19,25 +19,27 @@ void toNetworkByteOrder (char *cpStr, const uint8_t uiLength)
 #if __ENDIANESS == LITTLE
 	reverseBytes (cpStr, uiLength);
 #elif __ENDIANESS == BIG
-	/// Die Byte Order muss nicht
-	/// geaendert werden, da die
-	/// Netzwerkbyteorder ebenfalls
-	/// Big Endian ist.
+	/* Die Byte Order muss nicht
+	 * geaendert werden, da die
+	 * Netzwerkbyteorder ebenfalls
+	 * Big Endian ist.
+	 */
 #endif
 }
 
 void toPlatformByteOrder (char *cpStr, const uint8_t uiLength)
 {
-//#if __ENDIANESS == LITTLE
+/*#if __ENDIANESS == LITTLE*/
 	reverseBytes (cpStr, uiLength);
-//#elif __ENDIANESS == BIG
-	/// Die Byte Order muss nicht
-	/// geaendert werden, da die
-	/// Netzwerkbyteorder ebenfalls
-	/// Big Endian ist.
-//#else
-//#error no endianess defined
-//#endif
+/*#elif __ENDIANESS == BIG*/
+	/* Die Byte Order muss nicht
+	 * geaendert werden, da die
+	 * Netzwerkbyteorder ebenfalls
+	 * Big Endian ist.
+	 */
+/*#else
+#error no endianess defined
+#endif*/
 }
 
 #endif

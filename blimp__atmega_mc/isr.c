@@ -5,14 +5,14 @@
 
 void registerAllInterrupts()
 {
-/// Timer 2 starten
+/* Timer 2 starten */
 	TCCR2B = ( 1 << CS00 ) | (1 << CS01) | (1 << CS02);
 	TCNT2 = 1;
 	TIMSK2 |= ( 1 << TOIE2 );
-/// UART starten
+/* UART starten */
 	UCSR0B |= (1 << RXCIE0);
 
-	////uint8_t i;
+	/*////uint8_t i;*/
 	/*for (i = 0; i < 4; i++) {
 		uiStepperWatch[i] = 0xff;
 	}
@@ -21,16 +21,16 @@ void registerAllInterrupts()
 }
 
 #ifdef __UART_H__
-ISR (USART_RX_vect)  //USART_RXC
+ISR (USART_RX_vect)  /* USART_RXC */
 {
 	if (!(UCSR0A & (1 << RXC0))) {
-		//g.uiOccuredErrorCode = __ERROR_UNKNOWN;
+		/*//g.uiOccuredErrorCode = __ERROR_UNKNOWN;*/
 		return;
 	}
 	const char cReceivedChar = UDR0;
 
 	if (writeToBuffer (&strPCLink.receive, cReceivedChar) == __ERROR) {
-		//g.uiOccuredErrorCode = __ERROR_RECEIVE_BUFFER_OVERFLOW;
+		/*//g.uiOccuredErrorCode = __ERROR_RECEIVE_BUFFER_OVERFLOW;*/
 	}
 	if (protocol.uiUARTWatchdog < 100) {
 		protocol.uiUARTWatchdog = 0;
@@ -54,10 +54,10 @@ ISR (USART_UDRE_vect)
 #endif
 
 
-// Timer 2
+/* Timer 2 */
 ISR (TIMER2_OVF_vect)
 {
-/// TODO wenn PC Code fertig reparieren
+/* TODO wenn PC Code fertig reparieren */
 	uint8_t i;
 	/*for (i = 0; i < 4; i++) {
 		if (uiStepperWatch[i] != 0xff) {
@@ -74,12 +74,12 @@ ISR (TIMER2_OVF_vect)
 	#ifdef __UART_H__
 	protocol.uiUARTWatchdog++;
 	if (protocol.uiUARTWatchdog >= 50) {
-		//doStepperStep (&caStepper[__STEPPER_ENGINE]);
+		/*doStepperStep (&caStepper[__STEPPER_ENGINE]);*/
 		setPort (__PORT_B, 1, __SWITCH);
 		protocol.uiUARTWatchdog = 0;
 	}
 	#endif
-//	if (protocol.uiUARTWatchdog >= 50) {
+/*//	if (protocol.uiUARTWatchdog >= 50) {
 	//if (protocol.uiUARTWatchdog >= 2000) {
   		//PORTD = PORTD ^ 0xff;
 		//PORTB = PORTB ^ (1 << PB1);
@@ -93,11 +93,11 @@ ISR (TIMER2_OVF_vect)
 
 //	}	
 	//protocol.uiUARTWatchdog = 0;
-	//} ///FIXME: wie der rein bei Reperatur
+	//} ///FIXME: wie der rein bei Reperatur*/
 /*else if (protocol.uiUARTWatchdog >= 1000) {
 		protocol.strUARTProtocol.uiProtocolConnectionState =  __PROTOCOL_STATE_CONNECTION_RESET;
 	}*/
-	//PORTB = PORTB ^ (1 << PB3);
+	/*PORTB = PORTB ^ (1 << PB3);*/
 }
 
 #endif

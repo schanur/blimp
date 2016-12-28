@@ -4,7 +4,7 @@
 
 
 
-/// FIXME: sind doppelt!
+/* FIXME: sind doppelt! */
 #define __ERROR 1
 #define __SUCCESS 0
 #define __INCOMPLETE 1
@@ -17,8 +17,8 @@
 #define __UART_PROTOCOL_ATMEGA_STATE_RAM_USAGE		20
 #define __UART_PROTOCOL_ATMEGA_STATE_BUFFER_USAGE_RX	22
 #define __UART_PROTOCOL_ATMEGA_STATE_BUFFER_USAGE_TX	24
-//#define __PROTOCOL_ATMEGA_STATE_			26
-//#define __PROTOCOL_ATMEGA_STATE_RAM			28
+/*#define __PROTOCOL_ATMEGA_STATE_			26
+  #define __PROTOCOL_ATMEGA_STATE_RAM			28*/
 
 #define __UART_PROTOCOL_ENGINE_BOTH					38
 #define __UART_PROTOCOL_ENGINE_RIGHT				40
@@ -36,25 +36,21 @@
 #define __UART_PROTOCOL_COMMAND_LED_3			122
 #define __UART_PROTOCOL_COMMAND_LED_4			123
 
-//#define __PROTOCOL_COMMAND_MOTOR
+/*#define __PROTOCOL_COMMAND_MOTOR*/
 
 
-//###############################################################
-//#define __UART_PROTOCOL_RESET_CHAR			0x7F
+/*###############################################################*/
 #define __UART_PROTOCOL_RESET_STATE_1_CHAR		0x35
 #define __UART_PROTOCOL_RESET_STATE_2_CHAR		0x36
-//#define __UART_PROTOCOL_RESET_LENGTH			8
+
 #define __UART_PROTOCOL_RESET_STATE_1_LENGTH		9
 #define __UART_PROTOCOL_RESET_STATE_2_LENGTH		18
-//###############################################################
+/*###############################################################*/
 
 #define __PROTOCOL_STATE_COMMAND_INCOMLETE		1
 #define __PROTOCOL_STATE_COMMAND_COMPLETE		2
 #define __PROTOCOL_STATE_COMMAND_INVALID		3
 #define __PROTOCOL_STATE_COMMAND_VALID			4
 #define __PROTOCOL_STATE_CONNECTION_RESET		5
-
-
-
 
 #endif

@@ -5,27 +5,28 @@
 
 void initUart(struct uartBuffer *strBufferToInit)
 {
-	//initUartBuffer (strBufferToInit, 48, 48);
+	/*initUartBuffer (strBufferToInit, 48, 48);*/
 
 	long aaubrr0 = (F_CPU/((unsigned long)16 * BAUDRATE)) - 1;
 	UBRR0H = (aaubrr0>>8);
 	UBRR0L = (aaubrr0 & 0xFF);
    
-	/// UART Receiver und Transmitter anschalten
-	/// Data mode 8N1, asynchron
+	/* UART Receiver und Transmitter anschalten
+	 * Data mode 8N1, asynchron
+	 */
 	UCSR0B = (1 << RXEN0) | (1 << TXEN0);
 	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
 
-	/// Flush Receive-Buffer (entfernen evtl. vorhandener ung�ltiger Werte)
+	/* Flush Receive-Buffer (entfernen evtl. vorhandener ung�ltiger Werte) */
 	do {
 		uint8_t dummy;
 		(void) (dummy = UDR0);
 	}
 	while (UCSR0A & (1 << RXC0));
 
-	/// Einschalten der Interrupts
-	//UCSR0B |= (1 << RXCIE0);
-	//UCSR0B |= (1 << TXCIE0);
+	/ Einschalten der Interrupts */
+	/*UCSR0B |= (1 << RXCIE0);
+	UCSR0B |= (1 << TXCIE0);*/
 	return;
 }
 
@@ -67,8 +68,9 @@ int8_t uartPutString (struct uartBuffer *strBufferToPutS,
 			return (uartPutCharArray (strBufferToPutS, uipStringToSend, i));
 		}
 	}
-	/// Der String ist groesser als der Buffer oder
-	/// der String ist nicht mit 0 terminiert.
+	/* Der String ist groesser als der Buffer oder
+	 * der String ist nicht mit 0 terminiert.
+	 */
 	uiGlobalError = __ERROR_CODE_UART_MESSAGE_TO_LONG;
 	return (__ERROR);
 }
