@@ -14,6 +14,8 @@ void bla (struct gps_data_t *gpsdata, char *message, size_t len, int level)
 	cerr << "lat: " << (double)gpsdata->fix.latitude << " lon: " << gpsdata->fix.longitude << endl;
 }
 
+
+
 int main (void)
 {
 	cerr.precision (15);

@@ -68,10 +68,10 @@ double Distance :: distance ()
     return (dDistance);
 }
 
-void Distance :: setStartPoint (const Coordinate &cNewStartPoint)
+void Distance :: setStartPoint (const GeoCoordinate &cNewStartPoint)
 {
     delete cStartPoint;
-    cStartPoint = new Coordinate(cNewStartPoint);
+    cStartPoint = new GeoCoordinate(cNewStartPoint);
     bStartCoordsValid = true;
     bDirectionValid = false;
     bDistanceValid = false;
@@ -80,7 +80,7 @@ void Distance :: setStartPoint (const Coordinate &cNewStartPoint)
 void Distance :: setEndPoint (const Coordinate &cNewEndPoint)
 {
     delete cEndPoint;
-    cEndPoint = new Coordinate(cNewEndPoint);
+    cEndPoint = new GeoCoordinate(cNewEndPoint);
     bEndCoordsValid = true;
     bDirectionValid = false;
     bDistanceValid = false;
@@ -88,15 +88,15 @@ void Distance :: setEndPoint (const Coordinate &cNewEndPoint)
 
 Distance :: Distance ()
 {
-    cStartPoint = new Coordinate (Latitude (0.), Longitude (0.), 0);
-    cEndPoint = new Coordinate (Latitude (0.), Longitude (0.), 0);
+    cStartPoint = new GeoCoordinate (Latitude (0.), Longitude (0.), 0);
+    cEndPoint = new GeoCoordinate (Latitude (0.), Longitude (0.), 0);
     bStartCoordsValid = bEndCoordsValid = bDirectionValid = bDistanceValid = false;
 }
 
-Distance :: Distance (const Coordinate &cInitStartPoint , const Coordinate &cInitEndPoint)
+Distance :: Distance (const GeoCoordinate &cInitStartPoint , const GeoCoordinate &cInitEndPoint)
 {
-    cStartPoint = new Coordinate (cInitStartPoint);
-    cEndPoint = new Coordinate (cInitEndPoint);
+    cStartPoint = new GeoCoordinate (cInitStartPoint);
+    cEndPoint = new GeoCoordinate (cInitEndPoint);
     bStartCoordsValid = bEndCoordsValid = true;
     bDirectionValid = bDistanceValid = false;
 }
