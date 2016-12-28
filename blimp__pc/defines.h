@@ -12,6 +12,7 @@
 /// Numerische Konstanten
 #define __PI 3.141592653589793
 #define __EARTH_RADIUS 6371000.
+//		meassured by gpsdrive.de: __6383254.445
 
 /// SerialConnection
 //#define __SERCON_DEFAULT_LINE_TERMINATOR '\n'

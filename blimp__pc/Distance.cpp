@@ -33,10 +33,13 @@ double Distance :: direction ()
 		calcSphericAngle ();
     }
     bDirectionValid = true;
-	double tx, ty, earth_radius = 6383254.445;
-	tx = (2 * earth_radius * __PI / 360) * cos (deg2rad (cStartPoint->latitude.decimal ()))
+	
+	/// Formel stammt aus dem Softwareprojekt
+	/// gpsdrive (http://www.gpsdrive.de)
+	double tx, ty;
+	tx = (2 * __EARTH_RADIUS * __PI / 360) * cos (deg2rad (cStartPoint->latitude.decimal ()))
 			* (cEndPoint->longitude.decimal () - cStartPoint->longitude.decimal ());
-	ty = (2 * earth_radius * __PI / 360)
+	ty = (2 * __EARTH_RADIUS * __PI / 360)
 			* (cEndPoint->latitude.decimal () - cStartPoint->latitude.decimal ());
 	dDirection = atan (tx / ty);
 	if (ty < 0)
@@ -47,21 +50,6 @@ double Distance :: direction ()
 				dDirection += 2 * __PI;
 
     return (rad2deg (dDirection));
-
-	//*****************************
-     /*       kurswinkel = (System.Math.Sin(x_dezgrad_zweite) - System.Math.Sin(x_dezgrad_erste) * System.Math.Cos(winkel)) / (System.Math.Cos(x_dezgrad_erste) * System.Math.Sin(winkel));
-
-            double degrees = (System.Math.Acos(kurswinkel) * (360 / (2 * System.Math.PI)));
-            if (y_dezgrad_erste < y_dezgrad_zweite)
-            {
-                return (degrees);
-            }
-            else 
-            {
-                return (360 - degrees);
-            }
-
-*/
 }
 
 double Distance :: distance ()
